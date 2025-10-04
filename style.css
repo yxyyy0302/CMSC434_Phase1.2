@@ -1,4 +1,8 @@
 /*Device layout*/
+*{
+  
+  font-family: 'Indie Flower', cursive;
+}
 .device {
   width: 640px;
   height: 960px;
@@ -64,6 +68,7 @@
   color: rgb(77, 112, 94);
   font-size: 20px;
   cursor: pointer;
+  font-family: 'Indie Flower', cursive;
 }
 .navbar button.active {
   background: #a6c4ef;
@@ -89,6 +94,12 @@ p {
   font-size: 1.2rem;
   margin-bottom: 20px;
   font-family: 'Indie Flower', cursive;
+}
+
+label, select {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.2rem;
+  color: #333;
 }
 
 input[type="text"] {
