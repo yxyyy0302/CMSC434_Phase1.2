@@ -171,3 +171,9 @@ button:hover { background-color: #45a049; }
   margin-left:10px;
 }
 #tab6 .todo6-item .close:hover { background:#c9302c; }
+
+.nav-icon {
+  width: 50px;   
+  height: 50px;
+}
+
