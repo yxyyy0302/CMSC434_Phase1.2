@@ -86,3 +86,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   wireTodoList();
 });
+
+function showWarning() {
+  const box = document.getElementById("warningBox");
+  box.innerHTML = `
+    <div style="background:#f44336; color:white; padding:10px; border-radius:5px;">
+      <strong>Warning!</strong> Do not click on the profile image.
+      <span style="float:right; cursor:pointer;" onclick="this.parentElement.style.display='none'">x</span>
+    </div>
+  `;
+  box.style.display = "block";
+}
