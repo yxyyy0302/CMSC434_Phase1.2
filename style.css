@@ -1,7 +1,7 @@
 /*Device layout*/
 *{
   
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
 }
 
 html, body {
@@ -72,10 +72,10 @@ html, body {
   flex: 1;
   border: none;
   background: none;
-  color: rgb(77, 112, 94);
+  color: rgb(10, 10, 10);
   font-size: 20px;
   cursor: pointer;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
 }
 .navbar button.active {
   background: #a6c4ef;
@@ -91,20 +91,20 @@ html, body {
 }
 /* Global text and controls */
 h2 {
-  color: hsl(324, 33%, 17%);
+  color: black(324, 33%, 17%);
   font-size: 3rem;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
 }
 
 p {
   color: #555;
   font-size: 1.2rem;
   margin-bottom: 20px;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
 }
 
 label, select {
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
   font-size: 1.2rem;
   color: #333;
 }
@@ -115,7 +115,7 @@ input[type="text"] {
   font-size: 1rem;
   border: 2px solid #ccc;
   border-radius: 5px;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
 }
 
 button {
@@ -127,7 +127,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Indie Flower', cursive;
+  font-family: "Times New Roman", Times, serif;
 }
 button:hover { background-color: #45a049; }
 
