@@ -16,16 +16,57 @@ window.onload = () => openTab("tab1");
 function showChoices() {
   const radio = document.querySelector('input[name="opt"]:checked');
   const drop = document.getElementById("dropdown").value;
-  if (!radio) {
-    document.getElementById("choiceResult").textContent = "No choices selected";
-  } else {
-    if (radio.value  == "A"){
-      document.getElementById("choiceResult").textContent = "Added to savings from " + drop
-    } else{
-      document.getElementById("choiceResult").textContent = "Subtracted from savings for " + drop
+  const amount = document.getElementById("amountInput").value;
+  const date = document.getElementById("dateInput").value;
+  let newExpenseText = ""; // To hold the string
 
-    }
+  if (!radio) {
+    alert("Please select a transaction type (Income or Expense).");
+    return; // Stop the function if nothing is selected
   }
+
+// Check if an amount was entered
+  if (amount === "") {
+    alert("Please enter an amount.");
+    return; 
+  }
+
+  // Check if a date was selected
+  if (date === "") {
+    alert("Please select a date.");
+    return;
+  }
+
+  // Determine the text based on the user's choice
+  if (radio.value == "A") {
+    newExpenseText = `Income: $${amount} from ${drop} (on ${date})`;
+  } else {
+    newExpenseText = `Expense: $${amount} on ${drop} (on ${date})`;
+  }
+
+  // Clear the amount field after adding
+  document.getElementById("amountInput").value = "";
+  document.getElementById("dateInput").value = "";
+
+  // --- This is the new part that adds to a list ---
+
+  // 1. Get the list element from the HTML
+  const expenseList = document.getElementById("expenseList");
+
+  // 2. Create a new list item element
+  const li = document.createElement("li");
+  li.className = "todo6-item"; // Use the same style as your ToDo list
+
+  // 3. Create a span for the text (to match your todo list structure)
+  const span = document.createElement("span");
+  span.className = "todo6-text";
+  span.textContent = newExpenseText;
+
+  // 4. Add the text span to the list item
+  li.appendChild(span);
+
+  // 5. Add the new list item to the list on the page
+  expenseList.appendChild(li);
 }
 
 // helpers scoped to Tab 6

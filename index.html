@@ -92,13 +92,20 @@
 
       <!-- Tab 5 -->
       <div id="tab5" class="tab">
-        <h2>-Choices-</h2>
-        <h3><b>Update Savings</b></h3>
-        <label><input type="radio" name="opt" value="A">Add to Savings</label><br>
-        <label><input type="radio" name="opt" value="B">Subtract from Savings</label><br>
-        <h3><b>Source</b></h3>
+        <h2>-Transactions-</h2>
+        <h3><b>New Transaction</b></h3>
+        <label><input type="radio" name="opt" value="A">Income</label><br>
+        <label><input type="radio" name="opt" value="B">Expense</label><br>
+
+        <h3><b>Amount</b></h3>
+        <input type="number" id="amountInput" placeholder="Enter amount..." style="width: 90%; padding: 10px; font-size: 1.2rem;">
+
+        <h3><b>Date</b></h3>
+        <input type="date" id="dateInput" style="width: 90%; padding: 10px; font-size: 1.2rem;">
+
+        <h3><b>Category</b></h3>
         <select id="dropdown">
-          <option value="family">Family</option>
+          <option value="Shopping">Family</option>
           <option value="income">Income</option>
           <option value="food">Food</option>
           <option value="rent">Rent</option>
@@ -109,9 +116,9 @@
         <div style="text-align: center;">
           <button onclick="showChoices()">Update</button>
         </div>
-        <div style="text-align: center;">
-
-          <p id="choiceResult"></p>
+        <div class="scroll-area" style="height: 300px; margin-top: 20px;">
+          <ul id="expenseList" class="todo6-list"></ul>
+            </ul>
         </div>
       </div>
 
@@ -130,26 +137,22 @@
     <div class="navbar">
       <button onclick="openTab('tab1')">
         <img src="icons/text.png" class="nav-icon">
-        Text
-      </button>
-      <button onclick="openTab('tab2')">
-        <img src="icons/lr.png" class="nav-icon">
-        LR
+        Home
       </button>
       <button onclick="openTab('tab3')">
         <img src="icons/colors.png" class="nav-icon">
-        Colors
+        Budget
       </button>
       <button onclick="openTab('tab4')">
-        <img src="icons/profile.png" class="nav-icon">
-        Profile
+        <img src="icons/list.png" class="nav-icon">
+        Report</button>
       </button>
       <button onclick="openTab('tab5')">
         <img src="icons/choices.png" class="nav-icon">
-        Choices</button>
+        Add
       <button onclick="openTab('tab6')">
-        <img src="icons/list.png" class="nav-icon">
-        ToDo</button>
+        <img src="icons/profile.png" class="nav-icon">
+        Account</button>
     </div>
   </div>
 </body>
