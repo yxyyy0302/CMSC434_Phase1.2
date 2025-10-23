@@ -204,5 +204,18 @@ button:hover { background-color: #e5eb9d }
 }
 
 .navbar button.active {
-  background-color: #f5dfed
+  background-color: #ffd6f1
+}
+/* Tab 5 - Transaction List Styles */
+#tab5 .todo6-item {
+  background: none;  /* Removes the white background */
+  border: none;      /* Removes the border */
+  box-shadow: none;  /* Removes the shadow */
+  padding: 0 0 10px 0; /* Cleans up spacing */
+  cursor: default;   /* Makes it not look clickable */
+}
+
+#tab5 .todo6-text {
+  color: #fff;        /* MAKES THE TEXT WHITE */
+  font-size: 18px;   /* Keeps the font size */
 }
