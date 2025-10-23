@@ -125,7 +125,7 @@ p {
 label, select {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.2rem;
-  color: #333;
+  color: #070707;
 }
 
 input[type="text"] {
@@ -181,7 +181,7 @@ button:hover { background-color: #e5eb9d }
 }
 
 /* text */
-#tab6 .todo6-text { flex:1; font-size:18px; color:#222; }
+#tab6 .todo6-text { flex:1; font-size:18px; color:#000000; }
 
 /* done state */
 #tab6 .todo6-item.done { background:#ececec; border-color:#bbb; }
@@ -205,4 +205,17 @@ button:hover { background-color: #e5eb9d }
 
 .navbar button.active {
   background-color: #f5dfed
+}
+/* Tab 5 - Transaction List Styles */
+#tab5 .todo6-item {
+  background: none;  /* Removes the white background */
+  border: none;      /* Removes the border */
+  box-shadow: none;  /* Removes the shadow */
+  padding: 0 0 10px 0; /* Cleans up spacing */
+  cursor: default;   /* Makes it not look clickable */
+}
+
+#tab5 .todo6-text {
+  color: #fff;        /* MAKES THE TEXT WHITE */
+  font-size: 18px;   /* Keeps the font size */
 }
