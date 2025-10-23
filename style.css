@@ -33,7 +33,7 @@ html, body {
   overflow: hidden;
   flex-direction: column;
   min-height: 0;
-  background: #f6c5cf; 
+  background: #6D618E; 
 }
 .tab.active { display: flex; }
 
@@ -65,7 +65,7 @@ html, body {
 .navbar {
   display: flex;
   justify-content: space-around;
-  background: #e5eb9d;
+  background: #F3EDF1;
   height: 100px;
 }
 .navbar button {
@@ -81,6 +81,12 @@ html, body {
   background: #a6c4ef;
 }
 
+ul {
+  list-style: none; 
+  padding: 0;       
+  margin: 0;      
+}
+
 .scroll-area {
   height: 720px; 
   overflow-y: scroll;
@@ -94,6 +100,10 @@ h2 {
   color: black(324, 33%, 17%);
   font-size: 3rem;
   font-family: "Times New Roman", Times, serif;
+}
+
+h3{
+  font-size:2rem;
 }
 
 p {
