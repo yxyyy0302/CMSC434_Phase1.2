@@ -104,13 +104,14 @@
         <input type="date" id="dateInput" style="width: 90%; padding: 10px; font-size: 1.2rem;">
 
         <h3 style="color:white;"><b>Category</b></h3>
-        <select id="dropdown">
-          <option value="family">Family</option>
-          <option value="income">Income</option>
-          <option value="food">Food</option>
-          <option value="rent">Rent</option>
-          <option value="grocery">Grocery</option>
-        </select>
+        <input list="categories" id="categoryInput" placeholder="Enter or select category" style="width: 90%; height: 25px; font-size: 1.2rem; padding: 10px;">
+        <datalist id="categories">
+          <option value="Family">
+          <option value="Income">
+          <option value="Food">
+          <option value="Rent">
+          <option value="Grocery">
+        </datalist>
         <br>
         <br>
         <div style="text-align: center;">
