@@ -15,7 +15,7 @@ window.onload = () => openTab("tab1");
 
 function showChoices() {
   const radio = document.querySelector('input[name="opt"]:checked');
-  const drop = document.getElementById("dropdown").value;
+  const drop = document.getElementById("categoryInput").value;
   const amount = document.getElementById("amountInput").value;
   const date = document.getElementById("dateInput").value;
   let newExpenseText = ""; // To hold the string
