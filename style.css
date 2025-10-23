@@ -204,7 +204,7 @@ button:hover { background-color: #e5eb9d }
 }
 
 .navbar button.active {
-  background-color: #ffd6f1
+  background-color: #f5dfed
 }
 /* Tab 5 - Transaction List Styles */
 #tab5 .todo6-item {
