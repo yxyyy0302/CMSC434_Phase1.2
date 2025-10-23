@@ -90,19 +90,28 @@ ul {
 .scroll-area {
   height: 720px; 
   overflow-y: scroll;
-  background: #f6c5cf;
+  background: #6D618E;
   padding: 10px;
   line-height: 1.8;                    
 
 }
-/* Global text and controls */
+
+.scroll-area {
+  scrollbar-width: none;
+  -ms-overflow-style: none;  
+}
+
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
 h2 {
   color: black(324, 33%, 17%);
   font-size: 3rem;
   font-family: "Times New Roman", Times, serif;
 }
 
-h3{
+.homepageh3{
   font-size:2rem;
 }
 
@@ -139,7 +148,7 @@ button {
   cursor: pointer;
   font-family: "Times New Roman", Times, serif;
 }
-button:hover { background-color: #45a049; }
+button:hover { background-color: #e5eb9d }
 
 /* tab 4*/
 #tab4 h2 { text-align: left; }
@@ -194,3 +203,6 @@ button:hover { background-color: #45a049; }
   height: 50px;
 }
 
+.navbar button.active {
+  background-color: #f5dfed
+}
