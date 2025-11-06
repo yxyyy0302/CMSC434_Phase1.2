@@ -1,72 +1,36 @@
-/*Device layout*/
-*{
-  
-  font-family: "Times New Roman", Times, serif;
-}
-
+/*CORE APP LAYOUT */
 html, body {
-  height: 100%;
+  height: 100vh; 
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden; /* Prevent the whole browser from scrolling */
+  font-family: "Times New Roman", Times, serif;
+  background-color: #333; 
 }
+
 .device {
   width: 640px;
-  height: 960px;
+  height: 100%; 
   margin: auto;
   border: 2px solid black;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
+  background: #fff;
 }
 
 .tabs-container {
-  flex: 1;
-  overflow: hidden;
+  flex: 1; 
+  overflow-y: auto; /* This makes ONLY the content area scroll */
+  min-height: 0; /* Fix for flexbox */
 }
 
-/* Tabs */
-.tab {
-  display: none;                 
-  height: 100%;
-  box-sizing: border-box;
-  padding: 20px;
-  overflow: hidden;
-  flex-direction: column;
-  min-height: 0;
-  background: #6D618E; 
-}
-.tab.active { display: flex; }
-
-.tab > h2 { margin: 0 0 8px; }
-
-/* Tab 2 */
-#tab2 {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-#tab2 > h2 { margin: 0 0 8px; }
-
-#tab2 .lr-container {
-  min-height: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 10px;
-}
-#tab2 .lr-container p {
-  margin: 0;
-  font-weight: bold;
-}
-
-/* Navbar*/
 .navbar {
+  height: 100px; /* Fixed height for navbar */
   display: flex;
   justify-content: space-around;
   background: #F3EDF1;
-  height: 100px;
+  border-top: 1px solid #ccc;
 }
 .navbar button {
   flex: 1;
@@ -78,144 +42,163 @@ html, body {
   font-family: "Times New Roman", Times, serif;
 }
 .navbar button.active {
-  background: #a6c4ef;
+  background: #f5dfed; /* Active tab color */
 }
-
-ul {
-  list-style: none; 
-  padding: 0;       
-  margin: 0;      
-}
-
-.scroll-area {
-  height: 720px; 
-  overflow-y: scroll;
-  background: #6D618E;
-  padding: 10px;
-  line-height: 1.8;                    
-
-}
-
-.scroll-area {
-  scrollbar-width: none;
-  -ms-overflow-style: none;  
-}
-
-.scroll-area::-webkit-scrollbar {
-  display: none;
-}
-
-h2 {
-  color: black(324, 33%, 17%);
-  font-size: 3rem;
-  font-family: "Times New Roman", Times, serif;
-}
-
-.homepageh3{
-  font-size:2rem;
-}
-
-p {
-  color: #555;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  font-family: "Times New Roman", Times, serif;
-}
-
-label, select {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1.2rem;
-  color: #333;
-}
-
-input[type="text"] {
-  padding: 14px;
-  width: 60%;
-  font-size: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  font-family: "Times New Roman", Times, serif;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  margin-left: 10px;
-  background-color: #92b3db;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: "Times New Roman", Times, serif;
-}
-button:hover { background-color: #e5eb9d }
-
-/* tab 4*/
-#tab4 h2 { text-align: left; }
-#tab4 img {
-  display: block;
-  margin: 0 auto;
-}
-#tab4 h3 { text-align: center; }
-
-/* ToDo*/
-#tab6 .todo6-inputrow { display:flex; gap:10px; margin-bottom:14px; }
-#tab6 .todo6-inputrow input {
-  flex:1; padding:12px; font-size:16px; border:2px solid #ccc; border-radius:8px;
-}
-#tab6 .todo6-inputrow #addBtn {
-  padding:12px 18px; border:none; border-radius:8px; background:#8fb0e1; color:#fff; cursor:pointer;
-}
-#tab6 .todo6-inputrow #addBtn:hover { filter:brightness(.95); }
-
-#tab6 .todo6-list { list-style:none; padding:0; margin:0; }
-#tab6 .todo6-item {
-  position:relative;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:12px;
-  padding:14px 16px;
-  margin-bottom:12px;                    
-  background:#fff; border:2px solid #ccc; border-radius:10px; 
-  box-shadow:0 2px 4px rgba(0,0,0,.08);
-  user-select:none; cursor:pointer;      
-}
-
-/* text */
-#tab6 .todo6-text { flex:1; font-size:18px; color:#222; }
-
-/* done state */
-#tab6 .todo6-item.done { background:#ececec; border-color:#bbb; }
-#tab6 .todo6-item.done .todo6-text { text-decoration:line-through; color:#666; }
-
-/* close (delete) button */
-#tab6 .todo6-item .close {
-  position:static;                       
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:6px;
-  background:#d9534f; color:#fff; font-weight:600; cursor:pointer;
-  margin-left:10px;
-}
-#tab6 .todo6-item .close:hover { background:#c9302c; }
-
 .nav-icon {
-  width: 50px;   
+  width: 50px;
   height: 50px;
 }
 
-.navbar button.active {
-  background-color: #f5dfed
+/*SCREEN STYLING*/
+
+/* Screen visibility */
+.screen {
+  display: none; /* Hide all screens by default */
+  padding: 20px;
+  box-sizing: border-box;
 }
-/* Tab 5 - Transaction List Styles */
-#tab5 .todo6-item {
-  background: none;  /* Removes the white background */
-  border: none;      /* Removes the border */
-  box-shadow: none;  /* Removes the shadow */
-  padding: 0 0 10px 0; /* Cleans up spacing */
-  cursor: default;   /* Makes it not look clickable */
+.screen.active {
+  display: block; /* Show only the active screen */
 }
 
-#tab5 .todo6-text {
-  color: #fff;        /* MAKES THE TEXT WHITE */
-  font-size: 18px;   /* Keeps the font size */
+.purple-bg {
+  background: #6D618E;
+  color: white;
+  height: 100%; 
+}
+.purple-bg h2, .purple-bg h3, .purple-bg label {
+  color: white;
+}
+
+.form-input {
+  width: 90%;
+  padding: 10px;
+  font-size: 1.2rem;
+}
+.form-box {
+  background-color: #E1FAFC;
+  color: black;
+  margin-top: 0.5rem;
+  width: 500px;
+  height: 200px;
+  padding: 20px;
+}
+.form-box label, .form-box select {
+  color: black;
+}
+.update-btn {
+  background-color: #E1FAFC;
+  color: black;
+}
+
+/*HOME SCREEN (TAB 1)*/
+.home-section {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+.home-section:last-child { border-bottom: none; }
+.home-section-title {
+  font-size: 1.5rem;
+  color: black;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.home-balance {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #6D618E;
+  margin: 0;
+  text-align: center;
+}
+.home-balance-label {
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+.budget-item { margin-bottom: 12px; }
+.budget-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress {
+  height: 100%;
+  background-color: #8fb0e1;
+  border-radius: 10px;
+}
+.home-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.home-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.home-list li:last-child { border-bottom: none; }
+
+
+/*ADD SCREEN (TAB 4)*/
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-size: 18px;
+}
+
+/*ACCOUNT/TODO (TAB 5)*/
+.todo-inputrow { display:flex; gap:10px; margin-bottom:14px; }
+.todo-inputrow input {
+  flex:1; padding:12px; font-size:16px; border:2px solid #ccc; border-radius:8px;
+}
+.todo-inputrow button {
+  padding:12px 18px; border:none; border-radius:8px; background:#8fb0e1; color:#fff; cursor:pointer;
+}
+.todo-list { list-style:none; padding:0; margin:0; }
+.todo-list li {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding:14px 16px; margin-bottom:12px;
+  background:#fff; color: #222; border:2px solid #ccc; border-radius:10px;
+}
+.todo-list .close {
+  padding:6px 10px; border-radius:6px; background:#d9534f; color:#fff;
+}
+
+/*6. DELETE BUTTON STYLES*/
+
+/* Generic style for ALL close buttons */
+.close {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-left: 10px;
+  border-radius: 6px;
+  background: #d9534f; /* Red */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.close:hover {
+  background: #c9302c; 
+}
+
+.transaction-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  font-size: 18px;
 }

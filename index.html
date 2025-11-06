@@ -1,70 +1,62 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
-  <title>Phase 1.2 Prototype</title>
+  <title>CMSC 434 Prototype</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css"> <!-- connects CSS -->
-  <script src="script.js" defer></script> <!-- connects JS -->
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
+
   <div class="device">
+    
     <div class="tabs-container">
-      <!-- Tab 1 -->
-      <div id="tab1" class="tab">
-        <h2 style="text-align: center;color:white; margin-top:3rem;">Welcome to <br>Budgetly!</h2>
-        <img src="images/homescreenmoneyicon.webp"
-          style="text-align: center;width:150px; height:210px; margin-top:1rem; display:block; margin: 1rem auto;">
-        <h3 class ="homepageh3" style="text-align: center;color:white; margin-top:0;"> $444.66 <br>Total Balance Left</h3>
-
-
-        <div style="display: flex; justify-content: center; align-items: flex-start;  gap: 6rem; margin-top: 2rem;">
-
-          <div style="text-align: center;">
-            <img src="icons/profile.png"
-              style="background-color: #E1FAFC; width:200px; height:200px; border-radius: 50%;">
-            <h3 style="color:white; margin-top:0.5rem;">User Name</h3>
+      
+      <div id="screen-home" class="screen">
+        <div class="home-section">
+          <h3 class="home-balance" id="homeBalance">$0.00</h3>
+          <p class="home-balance-label">Total Balance Left</p>
+        </div>
+        <div class="home-section">
+          <h3 class="home-section-title">Budget Progress</h3>
+          <div class="budget-item">
+            <div class="budget-label">
+              <span>Food</span>
+              <span>$150 / $400</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 37.5%;"></div>
+            </div>
           </div>
-
-
-          <div >
-            <h3 style="text-align:center; margin-top:0; color:white;">Daily Report</h3>
-            <div style="background-color: #E1FAFC;  color:black; margin-top: 0.5rem; width: 200px; height: 200px; padding:20px; ">
-              <ul style="margin:0; padding-left:1rem;font-size: 20px; ">
-                <li>- You spent $5 on milk</li>
-                <li>- You received $10,000 from paycheck</li>
-                <li>- You are within your goal</li>
-                <li>
-  <a href="detailed-report.html">
-    - Click Here for a Detailed report
-  </a>
-</li>
-              </ul>
+          <div class="budget-item">
+            <div class="budget-label">
+              <span>Entertainment</span>
+              <span>$50 / $100</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 50%;"></div>
             </div>
           </div>
         </div>
-      </div>
-
-
-
-
-
-
-
-      <div id="tab2" class="tab">
-        <h2>-LR-</h2>
-        <div style="position: relative; height: 91%;">
-          <p style="position:absolute; bottom:0px; right:0px;">Down Here</p>
+        <div class="home-section">
+          <h3 class="home-section-title">Upcoming Bills</h3>
+          <ul class="home-list">
+            <li><span>Rent</span><span>Due Nov 10</span></li>
+            <li><span>Netflix</span><span>Due Nov 12</span></li>
+          </ul>
+        </div>
+        <div class="home-section">
+          <h3 class="home-section-title">Recent Transactions</h3>
+          <ul id="homeTransactionList" class="home-list">
+            </ul>
         </div>
       </div>
-
-      <!-- Tab 3 -->
-      <div id="tab3" class="tab">
+      
+      <div id="screen-budget" class="screen purple-bg">
         <h2>-Budget Plan-</h2>
-        <div  style="background-color: #E1FAFC;  color:black; margin-top: 0.5rem; width: 500px; height: 200px; padding:20px; ">
-          <label style="color:black;"><b>Category:</b></label>
+        <div class="form-box">
+          <label><b>Category:</b></label>
           <select id="budgetCategory">
             <option value="Food">Food</option>
             <option value="Rent">Rent</option>
@@ -73,41 +65,34 @@
             <option value="other">Other</option>
           </select>
           <br><br>
-      
-          <label style="color:black;"><b>Spending Limit ($):</b></label>
+          <label><b>Spending Limit ($):</b></label>
           <input type="number" id="budgetLimit" placeholder="Enter limit">
           <br><br>
-      
           <button id="addBudgetBtn">Add Limit</button>
         </div>
       </div>
-
-      <!-- Tab 4 -->
-      <div id="tab4" class="tab">
+      
+      <div id="screen-report" class="screen purple-bg">
         <h2>-User Profile-</h2>
         <img src="https://i.pinimg.com/736x/15/1c/b5/151cb599602d0b5c9dd957848d29ef5b.jpg"
-          style="border-radius:50%; cursor:pointer;" onClick="showWarning()">
-        <h3><b>Pikachu</b></h3>
-
-        <div id="warningBox" style="display:none; margin-top:10px;"></div>
-
+          style="border-radius:50%; cursor:pointer; display:block; margin: 0 auto;">
+        <h3 style="text-align: center;"><b>Pikachu</b></h3>
       </div>
+      
+      <div id="screen-add" class="screen purple-bg">
+        <h2>-Transactions-</h2>
+        <h3><b>New Transaction</b></h3>
+        <label><input type="radio" name="opt" value="A">Income</label><br>
+        <label><input type="radio" name="opt" value="B" checked>Expense</label><br>
 
-      <!-- Tab 5 -->
-      <div id="tab5" class="tab">
-        <h2 style="color:white;">-Transactions-</h2>
-        <h3 style="color:white;"><b>New Transaction</b></h3>
-        <label style="color:white;"><input type="radio" name="opt" value="A" >Income</label><br>
-        <label style="color:white;"><input type="radio" name="opt" value="B">Expense</label><br>
+        <h3><b>Amount</b></h3>
+        <input type="number" id="amountInput" placeholder="Enter amount..." class="form-input">
 
-        <h3 style="color:white;"><b>Amount</b></h3>
-        <input type="number" id="amountInput" placeholder="Enter amount..." style="width: 90%; padding: 10px; font-size: 1.2rem;">
+        <h3><b>Date</b></h3>
+        <input type="date" id="dateInput" class="form-input">
 
-        <h3 style="color:white;"><b>Date</b></h3>
-        <input type="date" id="dateInput" style="width: 90%; padding: 10px; font-size: 1.2rem;">
-
-        <h3 style="color:white;"><b>Category</b></h3>
-        <input list="categories" id="categoryInput" placeholder="Enter or select category" style="width: 90%; height: 25px; font-size: 1.2rem; padding: 10px;">
+        <h3><b>Category</b></h3>
+        <input list="categories" id="categoryInput" placeholder="Enter or select category" class="form-input">
         <datalist id="categories">
           <option value="Family">
           <option value="Income">
@@ -115,50 +100,39 @@
           <option value="Rent">
           <option value="Grocery">
         </datalist>
-        <br>
-        <br>
+        <br><br>
         <div style="text-align: center;">
-          <button style="background-color: #E1FAFC; color:black" onclick="showChoices()">Update</button>
+          <button class="update-btn" onclick="showChoices()">Update</button>
         </div>
         <div class="scroll-area" style="height: 300px; margin-top: 20px;">
-          <ul id="expenseList" class="todo6-list"></ul>
-            </ul>
+          <ul id="expenseList" class="transaction-list"></ul>
         </div>
       </div>
-
-      <!-- Tab 6 -->
-      <div id="tab6" class="tab">
+      
+      <div id="screen-account" class="screen purple-bg">
         <h2>-ToDo-</h2>
-        <div class="todo6-inputrow">
+        <div class="todo-inputrow">
           <input id="taskInput" type="text" placeholder="New task…">
           <button id="addBtn">Add</button>
         </div>
-        <ul id="taskList" class="todo6-list">
+        <ul id="taskList" class="todo-list"></ul>
       </div>
-    </div>
-
-    <!-- Navbar -->
-    <div class="navbar">
-      <button onclick="openTab('tab1')">
-        <img src="icons/text.png" class="nav-icon">
-        Home
+      
+    </div> <div class="navbar">
+      <button onclick="showScreen('screen-home')">
+        <img src="icons/text.png" class="nav-icon"><br>Home
       </button>
-      <button onclick="openTab('tab3')">
-        <img src="icons/colors.png" class="nav-icon">
-        Budget
+      <button onclick="showScreen('screen-budget')">
+        <img src="icons/colors.png" class="nav-icon"><br>Budget
       </button>
-      <button onclick="openTab('tab4')">
-        <img src="icons/list.png" class="nav-icon">
-        Report</button>
+      <button onclick="showScreen('screen-report')">
+        <img src="icons/list.png" class="nav-icon"><br>Report
       </button>
-      <button onclick="openTab('tab5')">
-        <img src="icons/choices.png" class="nav-icon">
-        Add
-      <button onclick="openTab('tab6')">
-        <img src="icons/profile.png" class="nav-icon">
-        Account</button>
-    </div>
-  </div>
-</body>
-
+      <button onclick="showScreen('screen-add')">
+        <img src="icons/choices.png" class="nav-icon"><br>Add
+      </button>
+      <button onclick="showScreen('screen-account')">
+        <img src="icons/profile.png" class="nav-icon"><br>Account
+      </button>
+    </div> </div> </body>
 </html>

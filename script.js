@@ -1,98 +1,157 @@
-function openTab(tabId) {
-  document
-    .querySelectorAll(".tab")
-    .forEach((div) => (div.style.display = "none"));
-  document.getElementById(tabId).style.display = "block";
-  document
-    .querySelectorAll(".navbar button")
-    .forEach((btn) => btn.classList.remove("active"));
-  document
-    .querySelector(`[onclick="openTab('${tabId}')"]`)
-    .classList.add("active");
+/*SCREEN NAVIGATION*/
+let currentScreen = 'screen-home'; // Keep track of the active screen
+let navButtons;
+
+function showScreen(screenId) {
+  // Hide the old screen
+  document.getElementById(currentScreen).classList.remove('active');
+  
+  // Show the new screen
+  const newScreen = document.getElementById(screenId);
+  newScreen.classList.add('active');
+  
+  // Update navbar button styles
+  navButtons.forEach(btn => {
+    if (btn.getAttribute('onclick') === `showScreen('${screenId}')`) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  
+  currentScreen = screenId;
 }
 
-window.onload = () => openTab("tab1");
+/*APP STARTUP & DATA*/
+document.addEventListener("DOMContentLoaded", () => {
+  navButtons = document.querySelectorAll(".navbar button");
+  
+  initializeApp(); // Set up default data if needed
+  loadAppData();   // Load all data from localStorage
+  
+  // Show the home screen by default
+  showScreen('screen-home');
 
+  // Wire up ToDo list buttons
+  document.getElementById("addBtn")?.addEventListener("click", addTaskFromInput);
+  document.getElementById("taskInput")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") addTaskFromInput();
+  });
+  wireTodoList();
+  wireTransactionList();
+});
+
+// Sets up the app with default data if it's the first time
+function initializeApp() {
+  if (localStorage.getItem("balance") === null) {
+    localStorage.setItem("balance", "444.66");
+    const defaultTransactions = [
+      "You received: $10,000 from paycheck",
+      "You spent: $5 on milk"
+    ];
+    localStorage.setItem("transactions", JSON.stringify(defaultTransactions));
+  }
+}
+
+// Loads all data from localStorage and updates the HTML
+function loadAppData() {
+  // 1. Load and display the balance
+  const balance = localStorage.getItem("balance");
+  document.getElementById("homeBalance").textContent = `$${parseFloat(balance).toFixed(2)}`;
+  
+  // 2. Load and display transactions
+  const transactions = JSON.parse(localStorage.getItem("transactions"));
+  
+  const homeList = document.getElementById("homeTransactionList");
+  const expenseList = document.getElementById("expenseList");
+  
+  homeList.innerHTML = "";
+  expenseList.innerHTML = "";
+
+  // ... inside loadAppData(), find this loop:
+transactions.reverse().forEach(text => {
+    const li = document.createElement("li");
+
+    const span = document.createElement("span");
+    span.className = "transaction-text"; // Add a class to find the text
+    span.textContent = text;
+
+    const close = document.createElement("span");
+    close.className = "close"; // The "x" button
+    close.textContent = "×";
+
+    li.appendChild(span);
+    li.appendChild(close);
+
+    // Add to Home screen list
+    homeList.appendChild(li);
+
+    // Add to Transactions screen list (we need a copy)
+    expenseList.appendChild(li.cloneNode(true));
+});
+}
+
+/*"ADD" SCREEN LOGIC*/
 function showChoices() {
   const radio = document.querySelector('input[name="opt"]:checked');
-  const drop = document.getElementById("categoryInput").value;
-  const amount = document.getElementById("amountInput").value;
+  const category = document.getElementById("categoryInput").value;
+  const amountString = document.getElementById("amountInput").value;
   const date = document.getElementById("dateInput").value;
-  let newExpenseText = ""; // To hold the string
-
-  if (!radio) {
-    alert("Please select a transaction type (Income or Expense).");
-    return; // Stop the function if nothing is selected
-  }
-
-// Check if an amount was entered
-  if (amount === "") {
-    alert("Please enter an amount.");
-    return; 
-  }
-
-  // Check if a date was selected
-  if (date === "") {
-    alert("Please select a date.");
+  
+  if (!radio || amountString === "" || date === "") {
+    alert("Please fill out all fields.");
     return;
   }
 
-  // Determine the text based on the user's choice
-  if (radio.value == "A") {
-    newExpenseText = `Income: $${amount} from ${drop} (on ${date})`;
-  } else {
-    newExpenseText = `Expense: $${amount} on ${drop} (on ${date})`;
+  const amount = parseFloat(amountString);
+  let newExpenseText = "";
+  let currentBalance = parseFloat(localStorage.getItem("balance"));
+
+  if (radio.value == "A") { // Income
+    newExpenseText = `You received: $${amount.toFixed(2)} from ${category}`;
+    currentBalance += amount;
+  } else { // Expense
+    newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}`;
+    currentBalance -= amount;
   }
 
-  // Clear the amount field after adding
+  // Save new balance
+  localStorage.setItem("balance", currentBalance.toString());
+
+  // Get old transaction list, add new one, save it back
+  const transactions = JSON.parse(localStorage.getItem("transactions"));
+  transactions.push(newExpenseText);
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+
+  // Refresh the App Data
+  loadAppData();
+
+  // Clear inputs
   document.getElementById("amountInput").value = "";
   document.getElementById("dateInput").value = "";
+  document.getElementById("categoryInput").value = "";
+  document.querySelector('input[name="opt"][value="B"]').checked = true; // Reset to "Expense"
 
-  // --- This is the new part that adds to a list ---
-
-  // 1. Get the list element from the HTML
-  const expenseList = document.getElementById("expenseList");
-
-  // 2. Create a new list item element
-  const li = document.createElement("li");
-  li.className = "todo6-item"; // Use the same style as your ToDo list
-
-  // 3. Create a span for the text (to match your todo list structure)
-  const span = document.createElement("span");
-  span.className = "todo6-text";
-  span.textContent = newExpenseText;
-
-  // 4. Add the text span to the list item
-  li.appendChild(span);
-
-  // 5. Add the new list item to the list on the page
-  expenseList.appendChild(li);
+  // Switch back to the home tab to see the change
+  showScreen('screen-home');
 }
 
-// helpers scoped to Tab 6
-function createTodoItem(text) {
-  const li = document.createElement("li");
-  li.className = "todo6-item";
 
-  const span = document.createElement("span");
-  span.className = "todo6-text";
-  span.textContent = text;
-
-  const close = document.createElement("span");
-  close.className = "close";
-  close.textContent = "×";
-
-  li.appendChild(span);
-  li.appendChild(close);
-  return li;
-}
-
+/*"TODO" SCREEN LOGIC*/
 function addTaskFromInput() {
   const input = document.getElementById("taskInput");
   const value = input.value.trim();
   if (!value) return;
 
-  const li = createTodoItem(value);
+  const li = document.createElement("li");
+  const span = document.createElement("span");
+  span.textContent = value;
+  const close = document.createElement("span");
+  close.className = "close";
+  close.textContent = "×";
+  li.appendChild(span);
+  li.appendChild(close);
+  
   document.getElementById("taskList").appendChild(li);
   input.value = "";
   input.focus();
@@ -100,41 +159,53 @@ function addTaskFromInput() {
 
 function wireTodoList() {
   const list = document.getElementById("taskList");
-
-  // Toggle "done" when clicking the item or its text
   list.addEventListener("click", (e) => {
-    const li = e.target.closest(".todo6-item");
-    if (!li) return;
-    if (e.target.classList.contains("close")) return; // delete handled below
-    li.classList.toggle("done");
-  });
-
-  // Delete when clicking ×
-  list.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("close")) return;
-    const li = e.target.closest(".todo6-item");
-    if (li) li.remove();
+    if (e.target.classList.contains("close")) {
+      e.target.closest("li").remove();
+    }
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document
-    .getElementById("addBtn")
-    ?.addEventListener("click", addTaskFromInput);
-  document.getElementById("taskInput")?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") addTaskFromInput();
-  });
+function wireTransactionList() {
 
-  wireTodoList();
-});
+  const handleDelete = (e) => {
 
-function showWarning() {
-  const box = document.getElementById("warningBox");
-  box.innerHTML = `
-    <div style="background:#f44336; color:white; padding:10px; border-radius:5px;">
-      <strong>Warning!</strong> Do not click on the profile image.
-      <span style="float:right; cursor:pointer;" onclick="this.parentElement.style.display='none'">x</span>
-    </div>
-  `;
-  box.style.display = "block";
+    if (!e.target.classList.contains('close')) return;
+    
+    const li = e.target.closest('li');
+    if (!li) return; // Exit if we couldn't find the list item
+    
+    const textSpan = li.querySelector('.transaction-text');
+    if (!textSpan) return; // Exit if the text doesn't exist
+    
+    const text = textSpan.textContent;
+    
+    let transactions = JSON.parse(localStorage.getItem("transactions"));
+    let currentBalance = parseFloat(localStorage.getItem("balance"));
+    
+    const amountMatch = text.match(/(\d+\.\d{2})/); 
+    
+    if (amountMatch) {
+        const amount = parseFloat(amountMatch[1]);
+        
+        if (text.startsWith("You spent")) {
+            currentBalance += amount; // Add back the expense
+        } else if (text.startsWith("You received")) {
+            currentBalance -= amount; // Subtract the income
+        }
+        
+        localStorage.setItem("balance", currentBalance.toString());
+    }
+
+    // 5. Filter and save the transaction list
+    transactions = transactions.filter(t => t !== text);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+    
+    // 6. Reload all data
+    loadAppData();
+  };
+
+  // Attach this logic to both lists
+  document.getElementById('homeTransactionList').addEventListener('click', handleDelete);
+  document.getElementById('expenseList').addEventListener('click', handleDelete);
 }
