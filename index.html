@@ -42,48 +42,65 @@
           </div>
         </div>
         <div class="home-section">
-          <h3 class="home-section-title" style = "color:white">Upcoming Bills</h3>
-          <ul class="home-list">
-            <li><span>Rent</span><span>Due Nov 10</span></li>
-            <li><span>Netflix</span><span>Due Nov 12</span></li>
-          </ul>
+          <h3 class="home-section-title" style="color:white">Upcoming Bills</h3>
+          
+          <ul class="home-list" id="billList">
+            </ul>
         </div>
         <div class="home-section">
           <h3 class="home-section-title"  style = "color:white">Recent Transactions</h3>
           <ul id="homeTransactionList" class="home-list">
           </ul>
         </div>
-      </div>
 
-      <div id="screen-budget" class="screen purple-bg">
-        <h2>-Budget Plan-</h2>
-        <div class="form-box">
-          <label><b>Category:</b></label>
-            <input list="budgetCategory" id="budgetCategoryInput" placeholder="Enter or select category" class="form-input">
-
-           <datalist id="budgetCategory">
-          <option value="Food">
-          <option value="Rent">
-          <option value="Family">
-          <option value="Grocery">
-          <option value="Other">
-        </datalist>
-          <br><br>
-          <label><b>Spending Limit ($):</b></label>
-          <input type="number" id="budgetLimit" placeholder="Enter limit">
-          <br><br>
-          <button id="addBudgetBtn">Add Limit</button>
+        <div class="home-section">
+          <h3 class="home-section-title" style="color:white">Savings Goals</h3>
+          <div id="goalsList">
+            </div>
         </div>
       </div>
 
-      <div id="screen-report" class="screen purple-bg">
-        <h2>-ToDo-</h2>
-        <div class="todo-inputrow">
-          <input id="taskInput" type="text" placeholder="New task…">
-          <button id="addBtn">Add</button>
-        </div>
-        <ul id="taskList" class="todo-list"></ul>
+    <div id="screen-budget" class="screen purple-bg">
+      <h2>-Financial Planning-</h2>
+      
+      <div style="text-align: center; margin-top: 40px; display: flex; flex-direction: column; gap: 20px; align-items: center;">
+        
+        <button class="update-btn" onclick="openModal('budgetModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
+          Set Budget Limit
+        </button>
+        
+        <button class="update-btn" onclick="openModal('billModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
+          Add Upcoming Bill
+        </button>
+
+        <button class="update-btn" onclick="openModal('savingsModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
+          Add Savings Goal
+        </button>
+        
       </div>
+    </div>
+
+    <div id="screen-report" class="screen purple-bg">
+        <h2>-Monthly Report-</h2>
+
+        <div class="report-section">
+          <h3>Spending by Category</h3>
+          <img src="images/Bildschirmfoto 2025-11-06 um 8.39.39 PM.png" style="width: 100%; max-width: 400px; display: block; margin: 10px auto;">
+        </div>
+
+        <div class="report-section">
+          <h3>Income vs. Expense</h3>
+          <img src="images/Bildschirmfoto 2025-11-06 um 8.51.52 PM.png" style="width: 100%; max-width: 400px; display: block; margin: 10px auto;">
+        </div>
+
+        <div class="report-section">
+          <h3>Summary</h3>
+          <ul class="report-summary-list">
+            <li>Total Spent This Month: <span>$150.00</span></li>
+            <li>Your Top Category: <span>Food</span></li>
+          </ul>
+        </div>
+    </div>
 
       <div id="screen-add" class="screen purple-bg">
         <h2>-Transactions-</h2>
@@ -107,6 +124,11 @@
           <option value="Grocery">
         </datalist>
         <br><br>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <button onclick="openModal('detailsModal')" style="background: none; border: 1px solid white; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            + Add Optional Details
+          </button>
+        </div>
         <div style="text-align: center;">
           <button class="update-btn" onclick="showChoices()">Update</button>
         </div>
@@ -143,11 +165,6 @@
             <div id="username2" style="font-size:20px;color:black;margin-top:10px;"></div>
           </div>
         </div>
-
-        
-
-        
-
       </div>
 
     </div>
@@ -156,7 +173,7 @@
         <img src="icons/home.png" class="nav-icon" style = "width:55%; height:55%"><br>Home
       </button>
       <button onclick="showScreen('screen-budget')">
-        <img src="icons/budget.png" class="nav-icon"><br>Budget
+        <img src="icons/budget.png" class="nav-icon"><br>Plan
       </button>
       <button onclick="showScreen('screen-report')">
         <img src="icons/report.png" class="nav-icon"><br>Report
@@ -169,6 +186,77 @@
       </button>
     </div>
   </div>
+  <div id="budgetModal" class="modal-overlay">
+  <div class="modal-content purple-bg" style="height: auto; max-height: 80%;">
+    <span class="close-modal" onclick="closeModal('budgetModal')">&times;</span>
+    <h2>Set Budget Limit</h2>
+    <div class="form-box" style="width: auto; height: auto;">
+      <label><b>Category:</b></label>
+      <input list="budgetOptionList" id="budgetCategoryInput" class="form-input" placeholder="Select or type category" style="margin-bottom: 10px;">
+      <datalist id="budgetOptionList">
+        <option value="Food">
+        <option value="Rent">
+        <option value="Grocery">
+        <option value="Family">
+        <option value="Entertainment">
+        <option value="Other">
+      </datalist>
+      <label><b>Limit ($):</b></label>
+      <input type="number" id="budgetLimit" class="form-input" style="margin-bottom: 20px;">
+      <button id="addBudgetBtn" class="update-btn">Save Limit</button>
+    </div>
+  </div>
+</div>
+
+<div id="billModal" class="modal-overlay">
+  <div class="modal-content purple-bg" style="height: auto; max-height: 80%;">
+    <span class="close-modal" onclick="closeModal('billModal')">&times;</span>
+    <h2>Add Upcoming Bill</h2>
+    <div class="form-box" style="width: auto; height: auto;">
+      <label><b>Bill Name:</b></label>
+      <input type="text" id="billName" class="form-input" style="margin-bottom: 10px;">
+      <label><b>Amount ($):</b></label>
+      <input type="number" id="billAmount" class="form-input" style="margin-bottom: 10px;">
+      <label><b>Due Date:</b></label>
+      <input type="date" id="billDate" class="form-input" style="margin-bottom: 20px;">
+      <button id="addBillBtn" class="update-btn">Save Bill</button>
+    </div>
+  </div>
+</div>
+
+<div id="detailsModal" class="modal-overlay">
+  <div class="modal-content purple-bg" style="height: auto;">
+    <span class="close-modal" onclick="closeModal('detailsModal')">&times;</span>
+    <h2>Optional Details</h2>
+    <div class="form-box" style="width: auto; height: auto;">
+      
+      <label><b>Merchant / Payee:</b></label>
+      <input type="text" id="merchantInput" placeholder="e.g. Walmart" class="form-input" style="margin-bottom: 10px;">
+
+      <label><b>Notes:</b></label>
+      <textarea id="notesInput" placeholder="Add details..." class="form-input" style="height: 80px; font-family: sans-serif; margin-bottom: 20px;"></textarea>
+
+      <button class="update-btn" onclick="closeModal('detailsModal')">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="savingsModal" class="modal-overlay">
+  <div class="modal-content purple-bg" style="height: auto;">
+    <span class="close-modal" onclick="closeModal('savingsModal')">&times;</span>
+    <h2>New Savings Goal</h2>
+    <div class="form-box" style="width: auto; height: auto;">
+      <label><b>Goal Name:</b></label>
+      <input type="text" id="goalName" placeholder="e.g. Vacation" class="form-input" style="margin-bottom: 10px;">
+      <label><b>Target Amount ($):</b></label>
+      <input type="number" id="goalAmount" placeholder="500.00" class="form-input" style="margin-bottom: 20px;">
+      <button id="addGoalBtn" class="update-btn">Save Goal</button>
+      <label><b>Target Date:</b></label>
+      <input type="date" id="goalDate" class="form-input" style="margin-bottom: 10px;">
+      <label><b>Motivation Note (Optional):</b></label>
+      <input type="text" id="goalNote" placeholder="Why are you saving?" class="form-input" style="margin-bottom: 20px;">
+  </div>
+</div>
 </body>
 
 </html>
