@@ -407,13 +407,16 @@ function addNewGoal() {
   const name = document.getElementById("goalName").value;
   const target = parseFloat(document.getElementById("goalAmount").value);
 
-  if (!name || isNaN(target) || target <= 0) {
-    alert("Please enter a valid goal name and target amount.");
+  const date = document.getElementById("goalDate").value;
+  const note = document.getElementById("goalNote").value;
+
+  if (!name || isNaN(target) || target <= 0 || !date) {
+    alert("Please fill out all required goal fields.");
     return;
   }
 
   const goals = JSON.parse(localStorage.getItem("goals")) || [];
-  goals.push({ name, saved: 0, target });
+  goals.push({ name, saved: 0, target, date, note });
   localStorage.setItem("goals", JSON.stringify(goals));
 
   closeModal('savingsModal');
@@ -422,6 +425,8 @@ function addNewGoal() {
   
   document.getElementById("goalName").value = "";
   document.getElementById("goalAmount").value = "";
+  document.getElementById("goalDate").value = "";
+  document.getElementById("goalNote").value = "";
 }
 
 /* MODAL LOGIC */
