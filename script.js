@@ -51,6 +51,12 @@ function initializeApp() {
     ];
     localStorage.setItem("transactions", JSON.stringify(defaultTransactions));
   }
+
+   const defaultBudgets = [
+      { category: "Food", spent: 150, limit: 400 },
+      { category: "Entertainment", spent: 50, limit: 100 }
+    ];
+    localStorage.setItem("budgets", JSON.stringify(defaultBudgets));
 }
 
 // Loads all data from localStorage and updates the HTML
