@@ -202,3 +202,20 @@ html, body {
   padding-bottom: 12px;
   font-size: 18px;
 }
+
+.addProfileBtn {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #E1FAFC;
+  color: black;
+  display: flex;
+  flex-direction: column; /* vertical stack */
+  align-items: center;
+  justify-content: center;
+  margin: 50px auto;
+  cursor: pointer;
+  font-size: 48px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}

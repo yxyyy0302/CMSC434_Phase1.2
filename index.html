@@ -113,10 +113,42 @@
       
       <div id="screen-account" class="screen purple-bg">
         
-        <h2>-User Profile-</h2>
-        <img src="https://i.pinimg.com/736x/15/1c/b5/151cb599602d0b5c9dd957848d29ef5b.jpg"
-          style="border-radius:50%; cursor:pointer; display:block; margin: 0 auto;">
-        <h3 style="text-align: center;"><b>Pikachu</b></h3>
+        <h1 style="text-align: center;">User Profile</h1>
+  <div id="profileContainer" style="text-align:center;">
+    <img id="currentProfilePic" src="images/pikachu_profile.jpg"
+      style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
+    <h3 id="currentProfileName"><b>Pikachu</b></h3>
+  </div>
+
+  <div id="profileList" style="margin-top:20px; text-align:center;"></div>
+
+ <div style="display:flex; justify-content:center; margin-top:70px;">
+  <div style="text-align:center;">
+    <div id="addProfileBtn1"
+        style="width:150px;height:150px;border-radius:50%;background-color:#E1FAFC;
+        color:black;display:flex;align-items:center;justify-content:center;
+        cursor:pointer;font-size:48px;"
+        onclick="addProfile('addProfileBtn1')">
+        +
+    </div>
+    <div id="username1" style="font-size:20px;color:black;margin-top:10px;"></div>
+  </div>
+</div>
+
+
+   <div style="display:flex; justify-content:center; margin-top:70px;">
+  <div style="text-align:center;">
+    <div id="addProfileBtn2"
+        style="width:150px;height:150px;border-radius:50%;background-color:#E1FAFC;
+        color:black;display:flex;align-items:center;justify-content:center;
+        cursor:pointer;font-size:48px;"
+        onclick="addProfile('addProfileBtn2')">
+        +
+    </div>
+    <div id="username2" style="font-size:20px;color:black;margin-top:10px;"></div>
+  </div>
+</div>
+
         
       </div>
       
@@ -136,5 +168,9 @@
       <button onclick="showScreen('screen-account')">
         <img src="icons/profile.png" class="nav-icon"><br>Account
       </button>
-    </div> </div> </body>
+    </div> </div> 
+
+ 
+  
+  </body>
 </html>
