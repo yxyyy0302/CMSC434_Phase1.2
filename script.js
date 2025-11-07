@@ -70,15 +70,34 @@ function loadAppData() {
   homeList.innerHTML = "";
   expenseList.innerHTML = "";
 
-  [...transactions].reverse().forEach(text => {
+  [...transactions].reverse().forEach(fullString => {
+      const parts = fullString.split("|");
+      const mainText = parts[0];
+      const noteText = parts[1]; // This will be undefined if there is no note
+
       const li = document.createElement("li");
+
+      li.dataset.fullText = fullString;
+      
+      // The Main Text
       const span = document.createElement("span");
       span.className = "transaction-text";
-      span.textContent = text;
+      span.textContent = mainText;
+      li.appendChild(span);
+
+      if (noteText) {
+        const noteIcon = document.createElement("span");
+        noteIcon.textContent = " 📝"; 
+        noteIcon.style.cursor = "pointer";
+        noteIcon.onclick = function() {
+            alert("Note: " + noteText);
+        };
+        li.appendChild(noteIcon);
+      }
+
       const close = document.createElement("span");
       close.className = "close";
       close.textContent = "×";
-      li.appendChild(span);
       li.appendChild(close);
 
       homeList.appendChild(li);
@@ -226,7 +245,8 @@ function showChoices() {
   const amountString = document.getElementById("amountInput").value;
   const date = document.getElementById("dateInput").value;
   const merchant = document.getElementById("merchantInput").value;
-  
+  const notes = document.getElementById("notesInput").value;
+
   if (!radio || amountString === "" || date === "") {
     alert("Please fill out all required fields (Amount, Date, Category).");
     return;
@@ -236,6 +256,7 @@ function showChoices() {
   let newExpenseText = "";
   let currentBalance = parseFloat(localStorage.getItem("balance"));
   const merchantText = merchant ? ` at ${merchant}` : "";
+  const notesText = notes ? ` (${notes})` : "";
 
   if (radio.value == "A") { // Income
     newExpenseText = `You received: $${amount.toFixed(2)} from ${category}`;
@@ -243,6 +264,10 @@ function showChoices() {
   } else { // Expense
     newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}${merchantText}`;
     currentBalance -= amount;
+  }
+
+  if (notes) {
+     newExpenseText += "|" + notes;
   }
 
   // Update Budget Progress Automatically
@@ -313,12 +338,9 @@ function wireTransactionList() {
     if (!e.target.classList.contains('close')) return;
     
     const li = e.target.closest('li');
-    if (!li) return; // Exit if we couldn't find the list item
+    if (!li) return; 
     
-    const textSpan = li.querySelector('.transaction-text');
-    if (!textSpan) return; // Exit if the text doesn't exist
-    
-    const text = textSpan.textContent;
+    const text = li.dataset.fullText;
     
     let transactions = JSON.parse(localStorage.getItem("transactions"));
     let currentBalance = parseFloat(localStorage.getItem("balance"));
