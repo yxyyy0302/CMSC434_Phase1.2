@@ -1,41 +1,39 @@
 /*SCREEN NAVIGATION*/
-let currentScreen = "screen-home"; // Keep track of the active screen
+let currentScreen = 'screen-home'; // Keep track of the active screen
 let navButtons;
 
 function showScreen(screenId) {
   // Hide the old screen
-  document.getElementById(currentScreen).classList.remove("active");
-
+  document.getElementById(currentScreen).classList.remove('active');
+  
   // Show the new screen
   const newScreen = document.getElementById(screenId);
-  newScreen.classList.add("active");
-
+  newScreen.classList.add('active');
+  
   // Update navbar button styles
-  navButtons.forEach((btn) => {
-    if (btn.getAttribute("onclick") === `showScreen('${screenId}')`) {
-      btn.classList.add("active");
+  navButtons.forEach(btn => {
+    if (btn.getAttribute('onclick') === `showScreen('${screenId}')`) {
+      btn.classList.add('active');
     } else {
-      btn.classList.remove("active");
+      btn.classList.remove('active');
     }
   });
-
+  
   currentScreen = screenId;
 }
 
 /*APP STARTUP & DATA*/
 document.addEventListener("DOMContentLoaded", () => {
   navButtons = document.querySelectorAll(".navbar button");
-
+  
   initializeApp(); // Set up default data if needed
-  loadAppData(); // Load all data from localStorage
-
+  loadAppData();   // Load all data from localStorage
+  
   // Show the home screen by default
-  showScreen("screen-home");
+  showScreen('screen-home');
 
   // Wire up ToDo list buttons
-  document
-    .getElementById("addBtn")
-    ?.addEventListener("click", addTaskFromInput);
+  document.getElementById("addBtn")?.addEventListener("click", addTaskFromInput);
   document.getElementById("taskInput")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTaskFromInput();
   });
@@ -49,7 +47,7 @@ function initializeApp() {
     localStorage.setItem("balance", "444.66");
     const defaultTransactions = [
       "You received: $10,000 from paycheck",
-      "You spent: $5 on milk",
+      "You spent: $5 on milk"
     ];
     localStorage.setItem("transactions", JSON.stringify(defaultTransactions));
   }
@@ -59,21 +57,19 @@ function initializeApp() {
 function loadAppData() {
   // 1. Load and display the balance
   const balance = localStorage.getItem("balance");
-  document.getElementById("homeBalance").textContent = `$${parseFloat(
-    balance
-  ).toFixed(2)}`;
-
+  document.getElementById("homeBalance").textContent = `$${parseFloat(balance).toFixed(2)}`;
+  
   // 2. Load and display transactions
   const transactions = JSON.parse(localStorage.getItem("transactions"));
-
+  
   const homeList = document.getElementById("homeTransactionList");
   const expenseList = document.getElementById("expenseList");
-
+  
   homeList.innerHTML = "";
   expenseList.innerHTML = "";
 
   // ... inside loadAppData(), find this loop:
-  transactions.reverse().forEach((text) => {
+transactions.reverse().forEach(text => {
     const li = document.createElement("li");
 
     const span = document.createElement("span");
@@ -92,7 +88,7 @@ function loadAppData() {
 
     // Add to Transactions screen list (we need a copy)
     expenseList.appendChild(li.cloneNode(true));
-  });
+});
 }
 
 /*"ADD" SCREEN LOGIC*/
@@ -101,7 +97,7 @@ function showChoices() {
   const category = document.getElementById("categoryInput").value;
   const amountString = document.getElementById("amountInput").value;
   const date = document.getElementById("dateInput").value;
-
+  
   if (!radio || amountString === "" || date === "") {
     alert("Please fill out all fields.");
     return;
@@ -111,12 +107,10 @@ function showChoices() {
   let newExpenseText = "";
   let currentBalance = parseFloat(localStorage.getItem("balance"));
 
-  if (radio.value == "A") {
-    // Income
+  if (radio.value == "A") { // Income
     newExpenseText = `You received: $${amount.toFixed(2)} from ${category}`;
     currentBalance += amount;
-  } else {
-    // Expense
+  } else { // Expense
     newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}`;
     currentBalance -= amount;
   }
@@ -139,8 +133,9 @@ function showChoices() {
   document.querySelector('input[name="opt"][value="B"]').checked = true; // Reset to "Expense"
 
   // Switch back to the home tab to see the change
-  showScreen("screen-home");
+  showScreen('screen-home');
 }
+
 
 /*"TODO" SCREEN LOGIC*/
 function addTaskFromInput() {
@@ -156,7 +151,7 @@ function addTaskFromInput() {
   close.textContent = "×";
   li.appendChild(span);
   li.appendChild(close);
-
+  
   document.getElementById("taskList").appendChild(li);
   input.value = "";
   input.focus();
@@ -172,56 +167,53 @@ function wireTodoList() {
 }
 
 function wireTransactionList() {
+
   const handleDelete = (e) => {
-    if (!e.target.classList.contains("close")) return;
 
-    const li = e.target.closest("li");
+    if (!e.target.classList.contains('close')) return;
+    
+    const li = e.target.closest('li');
     if (!li) return; // Exit if we couldn't find the list item
-
-    const textSpan = li.querySelector(".transaction-text");
+    
+    const textSpan = li.querySelector('.transaction-text');
     if (!textSpan) return; // Exit if the text doesn't exist
-
+    
     const text = textSpan.textContent;
-
+    
     let transactions = JSON.parse(localStorage.getItem("transactions"));
     let currentBalance = parseFloat(localStorage.getItem("balance"));
-
-    const amountMatch = text.match(/(\d+\.\d{2})/);
-
+    
+    const amountMatch = text.match(/(\d+\.\d{2})/); 
+    
     if (amountMatch) {
-      const amount = parseFloat(amountMatch[1]);
-
-      if (text.startsWith("You spent")) {
-        currentBalance += amount; // Add back the expense
-      } else if (text.startsWith("You received")) {
-        currentBalance -= amount; // Subtract the income
-      }
-
-      localStorage.setItem("balance", currentBalance.toString());
+        const amount = parseFloat(amountMatch[1]);
+        
+        if (text.startsWith("You spent")) {
+            currentBalance += amount; // Add back the expense
+        } else if (text.startsWith("You received")) {
+            currentBalance -= amount; // Subtract the income
+        }
+        
+        localStorage.setItem("balance", currentBalance.toString());
     }
 
     // 5. Filter and save the transaction list
-    transactions = transactions.filter((t) => t !== text);
+    transactions = transactions.filter(t => t !== text);
     localStorage.setItem("transactions", JSON.stringify(transactions));
-
+    
     // 6. Reload all data
     loadAppData();
   };
 
   // Attach this logic to both lists
-  document
-    .getElementById("homeTransactionList")
-    .addEventListener("click", handleDelete);
-  document
-    .getElementById("expenseList")
-    .addEventListener("click", handleDelete);
+  document.getElementById('homeTransactionList').addEventListener('click', handleDelete);
+  document.getElementById('expenseList').addEventListener('click', handleDelete);
 }
 
-//Adding new profiles
+
 function addProfile(id) {
   const container = document.getElementById(id);
 
-  // extract the number from id, e.g. "addProfileBtn1" → "1"
   const num = id.replace("addProfileBtn", "");
   const usernameDiv = document.getElementById(`username${num}`);
 
@@ -236,6 +228,3 @@ function addProfile(id) {
     usernameDiv.textContent = username;
   }
 }
-
-
-

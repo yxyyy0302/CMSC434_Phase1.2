@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>CMSC 434 Prototype</title>
@@ -7,12 +8,13 @@
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
+
 <body>
 
   <div class="device">
-    
+
     <div class="tabs-container">
-      
+
       <div id="screen-home" class="screen">
         <div class="home-section">
           <h3 class="home-balance" id="homeBalance">$0.00</h3>
@@ -49,10 +51,10 @@
         <div class="home-section">
           <h3 class="home-section-title">Recent Transactions</h3>
           <ul id="homeTransactionList" class="home-list">
-            </ul>
+          </ul>
         </div>
       </div>
-      
+
       <div id="screen-budget" class="screen purple-bg">
         <h2>-Budget Plan-</h2>
         <div class="form-box">
@@ -71,29 +73,16 @@
           <button id="addBudgetBtn">Add Limit</button>
         </div>
       </div>
-      
-     <div id="screen-report" class="screen purple-bg">
-        <h2>-Monthly Report-</h2>
 
-        <div class="report-section">
-          <h3>Spending by Category</h3>
-          <img src="images/Bildschirmfoto 2025-11-06 um 8.39.39 PM.png" style="width: 100%; max-width: 400px; display: block; margin: 10px auto;">
+      <div id="screen-report" class="screen purple-bg">
+        <h2>-ToDo-</h2>
+        <div class="todo-inputrow">
+          <input id="taskInput" type="text" placeholder="New task…">
+          <button id="addBtn">Add</button>
         </div>
+        <ul id="taskList" class="todo-list"></ul>
+      </div>
 
-        <div class="report-section">
-          <h3>Income vs. Expense</h3>
-          <img src="images/Bildschirmfoto 2025-11-06 um 8.42.44 PM.png" style="width: 100%; max-width: 400px; display: block; margin: 10px auto;">
-        </div>
-
-        <div class="report-section">
-          <h3>Summary</h3>
-          <ul class="report-summary-list">
-            <li>Total Spent This Month: <span>$150.00</span></li>
-            <li>Your Top Category: <span>Food</span></li>
-          </ul>
-        </div>
-    </div>
-      
       <div id="screen-add" class="screen purple-bg">
         <h2>-Transactions-</h2>
         <h3><b>New Transaction</b></h3>
@@ -123,49 +112,44 @@
           <ul id="expenseList" class="transaction-list"></ul>
         </div>
       </div>
-      
+
       <div id="screen-account" class="screen purple-bg">
-        
+
+
+
         <h1 style="text-align: center;">User Profile</h1>
-  <div id="profileContainer" style="text-align:center;">
-    <img id="currentProfilePic" src="images/pikachu_profile.jpg"
-      style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
-    <h3 id="currentProfileName"><b>Pikachu</b></h3>
-  </div>
+        <div id="profileContainer" style="text-align:center;"> <img id="currentProfilePic"
+            src="images/pikachu_profile.jpg" style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
+          <h3 id="currentProfileName"><b>Pikachu</b></h3>
+        </div>
+        <div id="profileList" style="margin-top:20px; text-align:center;"></div>
+        <div style="display:flex; justify-content:center; margin-top:70px;">
+          <div style="text-align:center;">
+            <div id="addProfileBtn1"
+              style="width:150px;height:150px;border-radius:50%;background-color:#E1FAFC; color:black;display:flex;align-items:center;justify-content:center; cursor:pointer;font-size:48px;"
+              onclick="addProfile('addProfileBtn1')"> + </div>
+            <div id="username1" style="font-size:20px;color:black;margin-top:10px;"></div>
+          </div>
+        </div>
 
-  <div id="profileList" style="margin-top:20px; text-align:center;"></div>
-
- <div style="display:flex; justify-content:center; margin-top:70px;">
-  <div style="text-align:center;">
-    <div id="addProfileBtn1"
-        style="width:150px;height:150px;border-radius:50%;background-color:#E1FAFC;
-        color:black;display:flex;align-items:center;justify-content:center;
-        cursor:pointer;font-size:48px;"
-        onclick="addProfile('addProfileBtn1')">
-        +
-    </div>
-    <div id="username1" style="font-size:20px;color:black;margin-top:10px;"></div>
-  </div>
-</div>
-
-
-   <div style="display:flex; justify-content:center; margin-top:70px;">
-  <div style="text-align:center;">
-    <div id="addProfileBtn2"
-        style="width:150px;height:150px;border-radius:50%;background-color:#E1FAFC;
-        color:black;display:flex;align-items:center;justify-content:center;
-        cursor:pointer;font-size:48px;"
-        onclick="addProfile('addProfileBtn2')">
-        +
-    </div>
-    <div id="username2" style="font-size:20px;color:black;margin-top:10px;"></div>
-  </div>
-</div>
+         <div id="profileList" style="margin-top:20px; text-align:center;"></div>
+        <div style="display:flex; justify-content:center; margin-top:70px;">
+          <div style="text-align:center;">
+            <div id="addProfileBtn2"
+              style="width:150px;height:150px;border-radius:50%;background-color:#E1FAFC; color:black;display:flex;align-items:center;justify-content:center; cursor:pointer;font-size:48px;"
+              onclick="addProfile('addProfileBtn2')"> + </div>
+            <div id="username2" style="font-size:20px;color:black;margin-top:10px;"></div>
+          </div>
+        </div>
 
         
+
+        
+
       </div>
-      
-    </div> <div class="navbar">
+
+    </div>
+    <div class="navbar">
       <button onclick="showScreen('screen-home')">
         <img src="icons/text.png" class="nav-icon"><br>Home
       </button>
@@ -181,9 +165,8 @@
       <button onclick="showScreen('screen-account')">
         <img src="icons/profile.png" class="nav-icon"><br>Account
       </button>
-    </div> </div> 
+    </div>
+  </div>
+</body>
 
- 
-  
-  </body>
 </html>
