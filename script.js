@@ -89,7 +89,79 @@ transactions.reverse().forEach(text => {
     // Add to Transactions screen list (we need a copy)
     expenseList.appendChild(li.cloneNode(true));
 });
+  renderBudgets();
 }
+
+/*----------------------*/
+/* BUDGET SCREEN LOGIC  */
+/*----------------------*/
+document.addEventListener("DOMContentLoaded", () => {
+  const addBudgetBtn = document.getElementById("addBudgetBtn");
+  if (addBudgetBtn) {
+    addBudgetBtn.addEventListener("click", addBudgetItem);
+  }
+});
+
+function addBudgetItem() {
+  const category = document.getElementById("budgetCategory").value;
+  const limit = parseFloat(document.getElementById("budgetLimit").value);
+
+  if (!category || isNaN(limit) || limit <= 0) {
+    alert("Please enter a valid category and limit.");
+    return;
+  }
+
+  // Load existing budgets or start new list
+  let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+
+  // Prevent duplicate categories
+  const existing = budgets.find(b => b.category === category);
+  if (existing) {
+    alert("That category already has a limit set!");
+    return;
+  }
+
+  // Add new item
+  budgets.push({ category, spent: 0, limit });
+  localStorage.setItem("budgets", JSON.stringify(budgets));
+
+  // Update UI
+  renderBudgets();
+  document.getElementById("budgetLimit").value = "";
+
+  // Switch back to home
+  showScreen('screen-home');
+}
+
+/* Load and render all budgets into the Home screen */
+function renderBudgets() {
+  const homeSection = document.querySelector("#screen-home .home-section:nth-of-type(2)");
+  const container = homeSection.querySelectorAll(".budget-item");
+  
+  // Clear old progress bars (except title)
+  homeSection.innerHTML = `
+    <h3 class="home-section-title">Budget Progress</h3>
+  `;
+
+  const budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+
+  budgets.forEach(b => {
+    const percent = Math.min((b.spent / b.limit) * 100, 100);
+    const item = document.createElement("div");
+    item.className = "budget-item";
+    item.innerHTML = `
+      <div class="budget-label">
+        <span>${b.category}</span>
+        <span>$${b.spent} / $${b.limit}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" style="width:${percent}%;"></div>
+      </div>
+    `;
+    homeSection.appendChild(item);
+  });
+}
+
 
 /*"ADD" SCREEN LOGIC*/
 function showChoices() {
@@ -113,6 +185,14 @@ function showChoices() {
   } else { // Expense
     newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}`;
     currentBalance -= amount;
+  }
+
+  // --- Update Budget Progress Automatically ---
+  let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+  const b = budgets.find(b => b.category === category);
+  if (b) {
+    b.spent += amount;
+    localStorage.setItem("budgets", JSON.stringify(budgets));
   }
 
   // Save new balance
