@@ -124,6 +124,30 @@ function loadAppData() {
     goalsContainer.appendChild(item);
   });
 
+  if (goalsContainer) {
+    goalsContainer.innerHTML = "";
+    goals.forEach(g => {
+      const percent = Math.min((g.saved / g.target) * 100, 100);
+      const item = document.createElement("div");
+      item.className = "budget-item";
+      
+      // the add sign
+      item.innerHTML = `
+        <div class="budget-label" style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <strong style="font-size: 1.1rem;">${g.name}</strong>
+            <button onclick="depositToGoal('${g.name}')" style="background: #4CAF50; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; margin-left: 10px; cursor: pointer; font-weight: bold;">+</button>
+          </div>
+          <span>$${g.saved} / $${g.target}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress" style="width:${percent}%; background-color: #4CAF50;"></div>
+        </div>
+      `;
+      goalsContainer.appendChild(item);
+    });
+  }
+
 }
 
 //budget logic
@@ -309,11 +333,11 @@ function wireTransactionList() {
         localStorage.setItem("balance", currentBalance.toString());
     }
 
-    // 5. Filter and save the transaction list
+    // Filter and save the transaction list
     transactions = transactions.filter(t => t !== text);
     localStorage.setItem("transactions", JSON.stringify(transactions));
     
-    // 6. Reload all data
+    // Reload all data
     loadAppData();
   };
 
@@ -357,16 +381,16 @@ function addNewBill() {
     return;
   }
 
-  // 1. Get existing bills
+  // Get existing bills
   const bills = JSON.parse(localStorage.getItem("bills")) || [];
 
-  // 2. Add new bill
+  // Add new bill
   bills.push({ name, amount, date });
   
-  // 3. Sort bills by date
+  // Sort bills by date
   bills.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // 4. Save back to storage
+  // Save back to storage
   localStorage.setItem("bills", JSON.stringify(bills));
 
   loadAppData();
@@ -407,4 +431,36 @@ function openModal(modalId) {
 
 function closeModal(modalId) {
   document.getElementById(modalId).style.display = "none";
+}
+
+// ad moneeeyyy
+function depositToGoal(goalName) {
+  const amountStr = prompt(`How much do you want to save for ${goalName}?`);
+  const amount = parseFloat(amountStr);
+
+  if (!amount || isNaN(amount) || amount <= 0) {
+    alert("Please enter a valid amount.");
+    return;
+  }
+
+  let goals = JSON.parse(localStorage.getItem("goals")) || [];
+  let currentBalance = parseFloat(localStorage.getItem("balance"));
+  let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+  // Find and update the goal
+  const goal = goals.find(g => g.name === goalName);
+  if (goal) {
+    goal.saved += amount;
+    // Subtract from main balance
+    currentBalance -= amount;
+    
+    // Record the transaction
+    transactions.push(`Savings: Moved $${amount.toFixed(2)} to ${goalName}`);
+  }
+
+  localStorage.setItem("goals", JSON.stringify(goals));
+  localStorage.setItem("balance", currentBalance.toString());
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+
+  loadAppData();
 }

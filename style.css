@@ -22,11 +22,11 @@ html, body {
 .tabs-container {
   flex: 1; 
   overflow-y: auto; 
-  min-height: 0; /* Fix for flexbox */
+  min-height: 0; 
 }
 
 .navbar {
-  height: 100px; /* Fixed height for navbar */
+  height: 100px; 
   display: flex;
   justify-content: space-around;
   background: #F3EDF1;
