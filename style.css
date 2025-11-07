@@ -210,7 +210,7 @@ html, body {
   background-color: #E1FAFC;
   color: black;
   display: flex;
-  flex-direction: column; /* vertical stack */
+  flex-direction: column; 
   align-items: center;
   justify-content: center;
   margin: 50px auto;
@@ -218,4 +218,42 @@ html, body {
   font-size: 48px;
   overflow: hidden;
   transition: transform 0.2s;
+}
+/*REPORT SCREEN STYLES*/
+
+.report-section {
+  background: rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.report-section h3 {
+  color: white;
+  margin-top: 0;
+  border-bottom: 1px solid #E1FAFC;
+  padding-bottom: 8px;
+}
+
+.report-summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-summary-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  color: white;
+  padding: 10px 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.report-summary-list li:last-child {
+  border-bottom: none;
+}
+
+.report-summary-list li span {
+  font-weight: bold;
 }
