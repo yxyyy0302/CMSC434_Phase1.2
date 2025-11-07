@@ -219,3 +219,17 @@ html, body {
  overflow: hidden;
  transition: transform 0.2s;
 }
+
+.device {
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #6D618E;
+}
+
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #6D618E;
+}
