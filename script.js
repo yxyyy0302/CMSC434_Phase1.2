@@ -270,13 +270,16 @@ function showChoices() {
      newExpenseText += "|" + notes;
   }
 
-  // Update Budget Progress Automatically
-  let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
-  const b = budgets.find(b => b.category === category);
-  if (b) {
-    b.spent += amount;
-    localStorage.setItem("budgets", JSON.stringify(budgets));
+  //Only update budgets for EXPENSES
+  if (radio.value === "B") {
+    let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+    const b = budgets.find(b => b.category === category);
+    if (b) {
+      b.spent += amount;
+      localStorage.setItem("budgets", JSON.stringify(budgets));
+    }
   }
+
 
   // Save new balance
   localStorage.setItem("balance", currentBalance.toString());
