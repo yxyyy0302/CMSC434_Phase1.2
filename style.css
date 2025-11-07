@@ -100,7 +100,6 @@ html, body {
 .home-section:last-child { border-bottom: none; }
 .home-section-title {
   font-size: 1.5rem;
-  color: black;
   margin-top: 0;
   margin-bottom: 16px;
 }
