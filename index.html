@@ -42,11 +42,10 @@
           </div>
         </div>
         <div class="home-section">
-          <h3 class="home-section-title" style = "color:white">Upcoming Bills</h3>
-          <ul class="home-list">
-            <li><span>Rent</span><span>Due Nov 10</span></li>
-            <li><span>Netflix</span><span>Due Nov 12</span></li>
-          </ul>
+          <h3 class="home-section-title" style="color:white">Upcoming Bills</h3>
+          
+          <ul class="home-list" id="billList">
+            </ul>
         </div>
         <div class="home-section">
           <h3 class="home-section-title"  style = "color:white">Recent Transactions</h3>
@@ -59,20 +58,34 @@
         <h2>-Budget Plan-</h2>
         <div class="form-box">
           <label><b>Category:</b></label>
-            <input list="budgetCategory" id="budgetCategoryInput" placeholder="Enter or select category" class="form-input">
+          <select id="budgetCategoryInput" class="form-input" style="margin-bottom: 10px;">
+            <option value="Food">Food</option>
+            <option value="Rent">Rent</option>
+            <option value="Family">Family</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+          </select>
 
-           <datalist id="budgetCategory">
-          <option value="Food">
-          <option value="Rent">
-          <option value="Family">
-          <option value="Grocery">
-          <option value="Other">
-        </datalist>
-          <br><br>
           <label><b>Spending Limit ($):</b></label>
-          <input type="number" id="budgetLimit" placeholder="Enter limit">
-          <br><br>
-          <button id="addBudgetBtn">Add Limit</button>
+          <input type="number" id="budgetLimit" placeholder="Enter limit" class="form-input" style="margin-bottom: 20px;">
+
+          <button id="addBudgetBtn" class="update-btn">Add Limit</button>
+        </div>
+
+        <h2 style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 20px;">
+          -Add Upcoming Bill-
+        </h2>
+        <div class="form-box" style="height: auto;"> <label><b>Bill Name:</b></label>
+          <input type="text" id="billName" placeholder="e.g. Netflix" class="form-input" style="margin-bottom: 10px;">
+
+          <label><b>Amount ($):</b></label>
+          <input type="number" id="billAmount" placeholder="15.99" class="form-input" style="margin-bottom: 10px;">
+
+          <label><b>Due Date:</b></label>
+          <input type="date" id="billDate" class="form-input" style="margin-bottom: 20px;">
+
+          <button id="addBillBtn" class="update-btn">Add Bill</button>
         </div>
       </div>
 

@@ -38,52 +38,72 @@ document.addEventListener("DOMContentLoaded", () => {
 // Sets up the app with default data if it's the first time
 function initializeApp() {
   if (localStorage.getItem("balance") === null) {
-    localStorage.setItem("balance", "444.66");
+    localStorage.setItem("balance", "500.00");
+    
+    // Default transactions
     const defaultTransactions = [
       "You received: $10,000 from paycheck",
       "You spent: $5 on milk"
     ];
     localStorage.setItem("transactions", JSON.stringify(defaultTransactions));
+
+    // Default bills
+    const defaultBills = [
+      { name: "Rent", amount: 1200, date: "2025-11-10" },
+      { name: "Netflix", amount: 15.99, date: "2025-11-15" }
+    ];
+    localStorage.setItem("bills", JSON.stringify(defaultBills));
   }
 }
 
 // Loads all data from localStorage and updates the HTML
 function loadAppData() {
-  // 1. Load and display the balance
+  // Load and display the balance
   const balance = localStorage.getItem("balance");
   document.getElementById("homeBalance").textContent = `$${parseFloat(balance).toFixed(2)}`;
   
-  // 2. Load and display transactions
+  // Load and display transactions
   const transactions = JSON.parse(localStorage.getItem("transactions"));
-  
   const homeList = document.getElementById("homeTransactionList");
   const expenseList = document.getElementById("expenseList");
   
   homeList.innerHTML = "";
   expenseList.innerHTML = "";
 
-  // ... inside loadAppData(), find this loop:
-transactions.reverse().forEach(text => {
-    const li = document.createElement("li");
+  [...transactions].reverse().forEach(text => {
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.className = "transaction-text";
+      span.textContent = text;
+      const close = document.createElement("span");
+      close.className = "close";
+      close.textContent = "×";
+      li.appendChild(span);
+      li.appendChild(close);
 
-    const span = document.createElement("span");
-    span.className = "transaction-text"; // Add a class to find the text
-    span.textContent = text;
+      homeList.appendChild(li);
+      expenseList.appendChild(li.cloneNode(true));
+  });
 
-    const close = document.createElement("span");
-    close.className = "close"; // The "x" button
-    close.textContent = "×";
-
-    li.appendChild(span);
-    li.appendChild(close);
-
-    // Add to Home screen list
-    homeList.appendChild(li);
-
-    // Add to Transactions screen list (we need a copy)
-    expenseList.appendChild(li.cloneNode(true));
-});
+  // 3. Render Budgets
   renderBudgets();
+
+  const bills = JSON.parse(localStorage.getItem("bills")) || [];
+  const billList = document.getElementById("billList");
+  billList.innerHTML = ""; // Clear current list
+
+  bills.forEach(bill => {
+    const li = document.createElement("li");
+    // This formats the date nicely (e.g., 11/10/2025)
+    // We add 'T00:00:00' so it doesn't shift due to timezones
+    const dateStr = new Date(bill.date + 'T00:00:00').toLocaleDateString();
+    
+    li.innerHTML = `
+      <span>${bill.name} ($${parseFloat(bill.amount).toFixed(2)})</span>
+      <span>Due ${dateStr}</span>
+    `;
+    billList.appendChild(li);
+  });
 }
 
 /*----------------------*/
@@ -301,4 +321,43 @@ function addProfile(id) {
     `;
     usernameDiv.textContent = username;
   }
+}
+
+/*BILLS LOGIC*/
+document.addEventListener("DOMContentLoaded", () => {
+  // Wire up the new "Add Bill" button
+  document.getElementById("addBillBtn")?.addEventListener("click", addNewBill);
+});
+
+function addNewBill() {
+  const name = document.getElementById("billName").value;
+  const amount = document.getElementById("billAmount").value;
+  const date = document.getElementById("billDate").value;
+
+  if (!name || !amount || !date) {
+    alert("Please fill out all bill details.");
+    return;
+  }
+
+  // 1. Get existing bills
+  const bills = JSON.parse(localStorage.getItem("bills")) || [];
+
+  // 2. Add new bill
+  bills.push({ name, amount, date });
+  
+  // 3. Sort bills by date (optional, but nice feature!)
+  bills.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // 4. Save back to storage
+  localStorage.setItem("bills", JSON.stringify(bills));
+
+  // 5. Refresh and go home
+  loadAppData();
+  
+  // Clear inputs
+  document.getElementById("billName").value = "";
+  document.getElementById("billAmount").value = "";
+  document.getElementById("billDate").value = "";
+  
+  showScreen('screen-home');
 }
