@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function addBudgetItem() {
-  const category = document.getElementById("budgetCategory").value;
+  const category = document.getElementById("budgetCategoryInput").value;
   const limit = parseFloat(document.getElementById("budgetLimit").value);
 
   if (!category || isNaN(limit) || limit <= 0) {
