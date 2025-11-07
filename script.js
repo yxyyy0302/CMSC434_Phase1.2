@@ -345,13 +345,12 @@ function addNewBill() {
   // 2. Add new bill
   bills.push({ name, amount, date });
   
-  // 3. Sort bills by date (optional, but nice feature!)
+  // 3. Sort bills by date
   bills.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   // 4. Save back to storage
   localStorage.setItem("bills", JSON.stringify(bills));
 
-  // 5. Refresh and go home
   loadAppData();
   
   // Clear inputs
@@ -360,4 +359,13 @@ function addNewBill() {
   document.getElementById("billDate").value = "";
   
   showScreen('screen-home');
+}
+
+/* MODAL LOGIC */
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = "flex";
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = "none";
 }
