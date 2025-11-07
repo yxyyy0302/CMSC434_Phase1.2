@@ -32,12 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Show the home screen by default
   showScreen('screen-home');
 
-  // Wire up ToDo list buttons
-  document.getElementById("addBtn")?.addEventListener("click", addTaskFromInput);
-  document.getElementById("taskInput")?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") addTaskFromInput();
-  });
-  wireTodoList();
   wireTransactionList();
 });
 
