@@ -85,7 +85,7 @@ function loadAppData() {
       expenseList.appendChild(li.cloneNode(true));
   });
 
-  // 3. Render Budgets
+  // Budgets
   renderBudgets();
 
   const bills = JSON.parse(localStorage.getItem("bills")) || [];
@@ -94,8 +94,6 @@ function loadAppData() {
 
   bills.forEach(bill => {
     const li = document.createElement("li");
-    // This formats the date nicely (e.g., 11/10/2025)
-    // We add 'T00:00:00' so it doesn't shift due to timezones
     const dateStr = new Date(bill.date + 'T00:00:00').toLocaleDateString();
     
     li.innerHTML = `
@@ -104,11 +102,31 @@ function loadAppData() {
     `;
     billList.appendChild(li);
   });
+
+  // For goals
+  const goals = JSON.parse(localStorage.getItem("goals")) || [];
+  const goalsContainer = document.getElementById("goalsList");
+  goalsContainer.innerHTML = "";
+
+  goals.forEach(g => {
+    const percent = Math.min((g.saved / g.target) * 100, 100);
+    const item = document.createElement("div");
+    item.className = "budget-item"; 
+    item.innerHTML = `
+      <div class="budget-label">
+        <span>${g.name}</span>
+        <span>$${g.saved} / $${g.target}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" style="width:${percent}%; background-color: #4CAF50;"></div>
+      </div>
+    `;
+    goalsContainer.appendChild(item);
+  });
+
 }
 
-/*----------------------*/
-/* BUDGET SCREEN LOGIC  */
-/*----------------------*/
+//budget logic
 document.addEventListener("DOMContentLoaded", () => {
   const addBudgetBtn = document.getElementById("addBudgetBtn");
   if (addBudgetBtn) {
@@ -325,8 +343,8 @@ function addProfile(id) {
 
 /*BILLS LOGIC*/
 document.addEventListener("DOMContentLoaded", () => {
-  // Wire up the new "Add Bill" button
   document.getElementById("addBillBtn")?.addEventListener("click", addNewBill);
+  document.getElementById("addGoalBtn")?.addEventListener("click", addNewGoal);
 });
 
 function addNewBill() {
@@ -359,6 +377,27 @@ function addNewBill() {
   document.getElementById("billDate").value = "";
   
   showScreen('screen-home');
+}
+
+function addNewGoal() {
+  const name = document.getElementById("goalName").value;
+  const target = parseFloat(document.getElementById("goalAmount").value);
+
+  if (!name || isNaN(target) || target <= 0) {
+    alert("Please enter a valid goal name and target amount.");
+    return;
+  }
+
+  const goals = JSON.parse(localStorage.getItem("goals")) || [];
+  goals.push({ name, saved: 0, target });
+  localStorage.setItem("goals", JSON.stringify(goals));
+
+  closeModal('savingsModal');
+  loadAppData();
+  showScreen('screen-home');
+  
+  document.getElementById("goalName").value = "";
+  document.getElementById("goalAmount").value = "";
 }
 
 /* MODAL LOGIC */

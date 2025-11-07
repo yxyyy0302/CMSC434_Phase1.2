@@ -52,18 +52,31 @@
           <ul id="homeTransactionList" class="home-list">
           </ul>
         </div>
+
+        <div class="home-section">
+          <h3 class="home-section-title" style="color:white">Savings Goals</h3>
+          <div id="goalsList">
+            </div>
+        </div>
       </div>
 
     <div id="screen-budget" class="screen purple-bg">
-      <h2>-Budgeting-</h2>
-      <div style="text-align: center; margin-top: 40px;">
-        <button class="update-btn" onclick="openModal('budgetModal')" style="width: 80%; padding: 20px; font-size: 1.5rem; margin-bottom: 30px;">
+      <h2>-Financial Planning-</h2>
+      
+      <div style="text-align: center; margin-top: 40px; display: flex; flex-direction: column; gap: 20px; align-items: center;">
+        
+        <button class="update-btn" onclick="openModal('budgetModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
           Set Budget Limit
         </button>
-    
-      <button class="update-btn" onclick="openModal('billModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
+        
+        <button class="update-btn" onclick="openModal('billModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
           Add Upcoming Bill
-      </button>
+        </button>
+
+        <button class="update-btn" onclick="openModal('savingsModal')" style="width: 80%; padding: 20px; font-size: 1.5rem;">
+          Add Savings Goal
+        </button>
+        
       </div>
     </div>
 
@@ -155,7 +168,7 @@
         <img src="icons/home.png" class="nav-icon" style = "width:55%; height:55%"><br>Home
       </button>
       <button onclick="showScreen('screen-budget')">
-        <img src="icons/budget.png" class="nav-icon"><br>Budget
+        <img src="icons/budget.png" class="nav-icon"><br>Plan
       </button>
       <button onclick="showScreen('screen-report')">
         <img src="icons/report.png" class="nav-icon"><br>Report
@@ -205,6 +218,21 @@
     </div>
   </div>
 </div>
+
+<div id="savingsModal" class="modal-overlay">
+  <div class="modal-content purple-bg" style="height: auto;">
+    <span class="close-modal" onclick="closeModal('savingsModal')">&times;</span>
+    <h2>New Savings Goal</h2>
+    <div class="form-box" style="width: auto; height: auto;">
+      <label><b>Goal Name:</b></label>
+      <input type="text" id="goalName" placeholder="e.g. Vacation" class="form-input" style="margin-bottom: 10px;">
+      <label><b>Target Amount ($):</b></label>
+      <input type="number" id="goalAmount" placeholder="500.00" class="form-input" style="margin-bottom: 20px;">
+      <button id="addGoalBtn" class="update-btn">Save Goal</button>
+    </div>
+  </div>
+</div>
+
 </body>
 
 </html>
