@@ -349,7 +349,18 @@ function wireTransactionList() {
     
     if (amountMatch) {
         const amount = parseFloat(amountMatch[1]);
-        
+        if (text.startsWith("You spent")) {
+          const categoryMatch = text.match(/on\s+([A-Za-z]+)/);
+          if (categoryMatch) {
+              const category = categoryMatch[1];
+              let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+              const b = budgets.find(b => b.category === category);
+              if (b) {
+                  b.spent = Math.max(0, b.spent - amount); // Prevent negative
+                  localStorage.setItem("budgets", JSON.stringify(budgets));
+              }
+          }
+        }
         if (text.startsWith("You spent")) {
             currentBalance += amount; // Add back the expense
         } else if (text.startsWith("You received")) {
