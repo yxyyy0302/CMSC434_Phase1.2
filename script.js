@@ -225,25 +225,27 @@ function showChoices() {
   const category = document.getElementById("categoryInput").value;
   const amountString = document.getElementById("amountInput").value;
   const date = document.getElementById("dateInput").value;
+  const merchant = document.getElementById("merchantInput").value;
   
   if (!radio || amountString === "" || date === "") {
-    alert("Please fill out all fields.");
+    alert("Please fill out all required fields (Amount, Date, Category).");
     return;
   }
 
   const amount = parseFloat(amountString);
   let newExpenseText = "";
   let currentBalance = parseFloat(localStorage.getItem("balance"));
+  const merchantText = merchant ? ` at ${merchant}` : "";
 
   if (radio.value == "A") { // Income
     newExpenseText = `You received: $${amount.toFixed(2)} from ${category}`;
     currentBalance += amount;
   } else { // Expense
-    newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}`;
+    newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}${merchantText}`;
     currentBalance -= amount;
   }
 
-  // --- Update Budget Progress Automatically ---
+  // Update Budget Progress Automatically
   let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
   const b = budgets.find(b => b.category === category);
   if (b) {
@@ -266,7 +268,9 @@ function showChoices() {
   document.getElementById("amountInput").value = "";
   document.getElementById("dateInput").value = "";
   document.getElementById("categoryInput").value = "";
-  document.querySelector('input[name="opt"][value="B"]').checked = true; // Reset to "Expense"
+  document.getElementById("merchantInput").value = ""; 
+  document.getElementById("notesInput").value = "";    
+  document.querySelector('input[name="opt"][value="B"]').checked = true; 
 
   // Switch back to the home tab to see the change
   showScreen('screen-home');

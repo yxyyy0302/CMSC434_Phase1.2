@@ -124,6 +124,11 @@
           <option value="Grocery">
         </datalist>
         <br><br>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <button onclick="openModal('detailsModal')" style="background: none; border: 1px solid white; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+            + Add Optional Details
+          </button>
+        </div>
         <div style="text-align: center;">
           <button class="update-btn" onclick="showChoices()">Update</button>
         </div>
@@ -219,6 +224,23 @@
   </div>
 </div>
 
+<div id="detailsModal" class="modal-overlay">
+  <div class="modal-content purple-bg" style="height: auto;">
+    <span class="close-modal" onclick="closeModal('detailsModal')">&times;</span>
+    <h2>Optional Details</h2>
+    <div class="form-box" style="width: auto; height: auto;">
+      
+      <label><b>Merchant / Payee:</b></label>
+      <input type="text" id="merchantInput" placeholder="e.g. Walmart" class="form-input" style="margin-bottom: 10px;">
+
+      <label><b>Notes:</b></label>
+      <textarea id="notesInput" placeholder="Add details..." class="form-input" style="height: 80px; font-family: sans-serif; margin-bottom: 20px;"></textarea>
+
+      <button class="update-btn" onclick="closeModal('detailsModal')">Done</button>
+    </div>
+  </div>
+</div>
+
 <div id="savingsModal" class="modal-overlay">
   <div class="modal-content purple-bg" style="height: auto;">
     <span class="close-modal" onclick="closeModal('savingsModal')">&times;</span>
@@ -235,7 +257,6 @@
       <input type="text" id="goalNote" placeholder="Why are you saving?" class="form-input" style="margin-bottom: 20px;">
   </div>
 </div>
-
 </body>
 
 </html>
