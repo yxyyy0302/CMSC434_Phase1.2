@@ -15,13 +15,13 @@
 
     <div class="tabs-container">
 
-      <div id="screen-home" class="screen">
+      <div id="screen-home" class="screen" style = " background-color: #6D618E; color:white">
         <div class="home-section">
-          <h3 class="home-balance" id="homeBalance">$0.00</h3>
-          <p class="home-balance-label">Total Balance Left</p>
+          <h3 class="home-balance" id="homeBalance" style = "color:white">$0.00</h3>
+          <p class="home-balance-label" style = "color:white">Total Balance Left</p>
         </div>
-        <div class="home-section">
-          <h3 class="home-section-title">Budget Progress</h3>
+        <div class="home-section" >
+          <h3 class="home-section-title"  style = "color:white">Budget Progress</h3>
           <div class="budget-item">
             <div class="budget-label">
               <span>Food</span>
@@ -42,14 +42,14 @@
           </div>
         </div>
         <div class="home-section">
-          <h3 class="home-section-title">Upcoming Bills</h3>
+          <h3 class="home-section-title" style = "color:white">Upcoming Bills</h3>
           <ul class="home-list">
             <li><span>Rent</span><span>Due Nov 10</span></li>
             <li><span>Netflix</span><span>Due Nov 12</span></li>
           </ul>
         </div>
         <div class="home-section">
-          <h3 class="home-section-title">Recent Transactions</h3>
+          <h3 class="home-section-title"  style = "color:white">Recent Transactions</h3>
           <ul id="homeTransactionList" class="home-list">
           </ul>
         </div>
@@ -153,16 +153,16 @@
     </div>
     <div class="navbar">
       <button onclick="showScreen('screen-home')">
-        <img src="icons/text.png" class="nav-icon"><br>Home
+        <img src="icons/home.png" class="nav-icon" style = "width:55%; height:55%"><br>Home
       </button>
       <button onclick="showScreen('screen-budget')">
-        <img src="icons/colors.png" class="nav-icon"><br>Budget
+        <img src="icons/budget.png" class="nav-icon"><br>Budget
       </button>
       <button onclick="showScreen('screen-report')">
-        <img src="icons/list.png" class="nav-icon"><br>Report
+        <img src="icons/report.png" class="nav-icon"><br>Report
       </button>
       <button onclick="showScreen('screen-add')">
-        <img src="icons/choices.png" class="nav-icon"><br>Add
+        <img src="icons/open-account.png" class="nav-icon"><br>Transactions
       </button>
       <button onclick="showScreen('screen-account')">
         <img src="icons/profile.png" class="nav-icon"><br>Account
