@@ -2,516 +2,593 @@
 let currentScreen = 'screen-home'; // Keep track of the active screen
 let navButtons;
 
+
 function showScreen(screenId) {
-  // Hide the old screen
-  document.getElementById(currentScreen).classList.remove('active');
-  
+ // Hide the old screen
+ document.getElementById(currentScreen).classList.remove('active');
   // Show the new screen
-  const newScreen = document.getElementById(screenId);
-  newScreen.classList.add('active');
-  
+ const newScreen = document.getElementById(screenId);
+ newScreen.classList.add('active');
   // Update navbar button styles
-  navButtons.forEach(btn => {
-    if (btn.getAttribute('onclick') === `showScreen('${screenId}')`) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
-  
+ navButtons.forEach(btn => {
+   if (btn.getAttribute('onclick') === `showScreen('${screenId}')`) {
+     btn.classList.add('active');
+   } else {
+     btn.classList.remove('active');
+   }
+ });
   currentScreen = screenId;
 }
 
+
 /*APP STARTUP & DATA*/
 document.addEventListener("DOMContentLoaded", () => {
-  navButtons = document.querySelectorAll(".navbar button");
-  
+ navButtons = document.querySelectorAll(".navbar button");
   initializeApp(); // Set up default data if needed
-  loadAppData();   // Load all data from localStorage
-  
+ loadAppData();   // Load all data from localStorage
   // Show the home screen by default
-  showScreen('screen-home');
+ showScreen('screen-home');
 
-  wireTransactionList();
+
+ wireTransactionList();
 });
+
 
 // Sets up the app with default data if it's the first time
 function initializeApp() {
-  if (localStorage.getItem("balance") === null) {
-    localStorage.setItem("balance", "500.00");
-    
-    // Default transactions
-    const defaultTransactions = [
-      "You received: $10,000 from paycheck",
-      "You spent: $5 on milk"
-    ];
-    localStorage.setItem("transactions", JSON.stringify(defaultTransactions));
+ if (localStorage.getItem("balance") === null) {
+   localStorage.setItem("balance", "500.00");
+  
+   // Default transactions
+   const defaultTransactions = [
+     "You received: $10,000 from paycheck",
+     "You spent: $5 on milk"
+   ];
+   localStorage.setItem("transactions", JSON.stringify(defaultTransactions));
 
-    // Default bills
-    const defaultBills = [
-      { name: "Rent", amount: 1200, date: "2025-11-10" },
-      { name: "Netflix", amount: 15.99, date: "2025-11-15" }
-    ];
-    localStorage.setItem("bills", JSON.stringify(defaultBills));
-  }
 
-   const defaultBudgets = [
-      { category: "Food", spent: 150, limit: 400 },
-      { category: "Entertainment", spent: 50, limit: 100 }
-    ];
-    localStorage.setItem("budgets", JSON.stringify(defaultBudgets));
+   // Default bills
+   const defaultBills = [
+     { name: "Rent", amount: 1200, date: "2025-11-10" },
+     { name: "Netflix", amount: 15.99, date: "2025-11-15" }
+   ];
+   localStorage.setItem("bills", JSON.stringify(defaultBills));
+ }
 }
+
 
 // Loads all data from localStorage and updates the HTML
 function loadAppData() {
-  // Load and display the balance
-  const balance = localStorage.getItem("balance");
-  document.getElementById("homeBalance").textContent = `$${parseFloat(balance).toFixed(2)}`;
-  
+ // Load and display the balance
+ const balance = localStorage.getItem("balance");
+ document.getElementById("homeBalance").textContent = `$${parseFloat(balance).toFixed(2)}`;
+ document.getElementById("homeHeaderBalance").textContent = `$${parseFloat(balance).toFixed(2)}`;
   // Load and display transactions
-  const transactions = JSON.parse(localStorage.getItem("transactions"));
-  const homeList = document.getElementById("homeTransactionList");
-  const expenseList = document.getElementById("expenseList");
-  
+ const transactions = JSON.parse(localStorage.getItem("transactions"));
+ const homeList = document.getElementById("homeTransactionList");
+ const expenseList = document.getElementById("expenseList");
   homeList.innerHTML = "";
-  expenseList.innerHTML = "";
+ expenseList.innerHTML = "";
 
-  [...transactions].reverse().forEach(fullString => {
-      const parts = fullString.split("|");
-      const mainText = parts[0];
-      const noteText = parts[1]; // This will be undefined if there is no note
 
-      const li = document.createElement("li");
+ [...transactions].reverse().forEach(fullString => {
+     const parts = fullString.split("|");
+     const mainText = parts[0];
+     const noteText = parts[1]; // This will be undefined if there is no note
 
-      li.dataset.fullText = fullString;
-      
-      // The Main Text
-      const span = document.createElement("span");
-      span.className = "transaction-text";
-      span.textContent = mainText;
-      li.appendChild(span);
 
-      if (noteText) {
-        const noteIcon = document.createElement("span");
-        noteIcon.textContent = " 📝"; 
-        noteIcon.style.cursor = "pointer";
-        noteIcon.onclick = function() {
-            alert("Note: " + noteText);
-        };
-        li.appendChild(noteIcon);
-      }
+     const li = document.createElement("li");
 
-      const close = document.createElement("span");
-      close.className = "close";
-      close.textContent = "×";
-      li.appendChild(close);
 
-      homeList.appendChild(li);
-      expenseList.appendChild(li.cloneNode(true));
-  });
-
-  // Budgets
-  renderBudgets();
-
-  const bills = JSON.parse(localStorage.getItem("bills")) || [];
-  const billList = document.getElementById("billList");
-  billList.innerHTML = ""; // Clear current list
-
-  bills.forEach(bill => {
-    const li = document.createElement("li");
-    const dateStr = new Date(bill.date + 'T00:00:00').toLocaleDateString();
+     li.dataset.fullText = fullString;
     
-    li.innerHTML = `
-      <span>${bill.name} ($${parseFloat(bill.amount).toFixed(2)})</span>
-      <span>Due ${dateStr}</span>
-    `;
-    billList.appendChild(li);
-  });
+     // The Main Text
+     const span = document.createElement("span");
+     span.className = "transaction-text";
+     span.textContent = mainText;
+     li.appendChild(span);
 
-  // For goals
-  const goals = JSON.parse(localStorage.getItem("goals")) || [];
-  const goalsContainer = document.getElementById("goalsList");
-  goalsContainer.innerHTML = "";
 
-  goals.forEach(g => {
-    const percent = Math.min((g.saved / g.target) * 100, 100);
-    const item = document.createElement("div");
-    item.className = "budget-item"; 
-    item.innerHTML = `
-      <div class="budget-label">
-        <span>${g.name}</span>
-        <span>$${g.saved} / $${g.target}</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress" style="width:${percent}%; background-color: #4CAF50;"></div>
-      </div>
-    `;
-    goalsContainer.appendChild(item);
-  });
+     if (noteText) {
+       const noteIcon = document.createElement("span");
+       noteIcon.textContent = " 📝";
+       noteIcon.style.cursor = "pointer";
+       noteIcon.onclick = function() {
+           alert("Note: " + noteText);
+       };
+       li.appendChild(noteIcon);
+     }
 
-  if (goalsContainer) {
-    goalsContainer.innerHTML = "";
-    goals.forEach(g => {
-      const percent = Math.min((g.saved / g.target) * 100, 100);
-      const item = document.createElement("div");
-      item.className = "budget-item";
-      
-      // the add sign
-      item.innerHTML = `
-        <div class="budget-label" style="display: flex; align-items: center; justify-content: space-between;">
-          <div>
-            <strong style="font-size: 1.1rem;">${g.name}</strong>
-            <button onclick="depositToGoal('${g.name}')" style="background: #4CAF50; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; margin-left: 10px; cursor: pointer; font-weight: bold;">+</button>
-          </div>
-          <span>$${g.saved} / $${g.target}</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress" style="width:${percent}%; background-color: #4CAF50;"></div>
-        </div>
-      `;
-      goalsContainer.appendChild(item);
-    });
-  }
+
+     const close = document.createElement("span");
+     close.className = "close";
+     close.textContent = "×";
+     li.appendChild(close);
+
+
+     homeList.appendChild(li);
+     expenseList.appendChild(li.cloneNode(true));
+ });
+
+
+ // Budgets
+ renderBudgets();
+
+
+ const bills = JSON.parse(localStorage.getItem("bills")) || [];
+ const billList = document.getElementById("billList");
+ billList.innerHTML = ""; // Clear current list
+
+
+ bills.forEach(bill => {
+   const li = document.createElement("li");
+   const dateStr = new Date(bill.date + 'T00:00:00').toLocaleDateString();
+  
+   li.innerHTML = `
+     <span>${bill.name} ($${parseFloat(bill.amount).toFixed(2)})</span>
+     <span>Due ${dateStr}</span>
+   `;
+   billList.appendChild(li);
+ });
+
+
+ // For goals
+ const goals = JSON.parse(localStorage.getItem("goals")) || [];
+ const goalsContainer = document.getElementById("goalsList");
+ goalsContainer.innerHTML = "";
+
+
+ goals.forEach(g => {
+   const percent = Math.min((g.saved / g.target) * 100, 100);
+   const item = document.createElement("div");
+   item.className = "budget-item";
+   item.innerHTML = `
+     <div class="budget-label">
+       <span>${g.name}</span>
+       <span>$${g.saved} / $${g.target}</span>
+     </div>
+     <div class="progress-bar">
+       <div class="progress" style="width:${percent}%; background-color: #4CAF50;"></div>
+     </div>
+   `;
+   goalsContainer.appendChild(item);
+ });
+
+
+ if (goalsContainer) {
+   goalsContainer.innerHTML = "";
+   goals.forEach(g => {
+     const percent = Math.min((g.saved / g.target) * 100, 100);
+     const item = document.createElement("div");
+     item.className = "budget-item";
+    
+     // the add sign
+     item.innerHTML = `
+       <div class="budget-label" style="display: flex; align-items: center; justify-content: space-between;">
+         <div>
+           <strong style="font-size: 1.1rem;">${g.name}</strong>
+           <button onclick="depositToGoal('${g.name}')" style="background: #4CAF50; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; margin-left: 10px; cursor: pointer; font-weight: bold;">+</button>
+         </div>
+         <span>$${g.saved} / $${g.target}</span>
+       </div>
+       <div class="progress-bar">
+         <div class="progress" style="width:${percent}%; background-color: #4CAF50;"></div>
+       </div>
+     `;
+     goalsContainer.appendChild(item);
+   });
+ }
+
 
 }
+
 
 //budget logic
 document.addEventListener("DOMContentLoaded", () => {
-  const addBudgetBtn = document.getElementById("addBudgetBtn");
-  if (addBudgetBtn) {
-    addBudgetBtn.addEventListener("click", addBudgetItem);
-  }
+ const addBudgetBtn = document.getElementById("addBudgetBtn");
+ if (addBudgetBtn) {
+   addBudgetBtn.addEventListener("click", addBudgetItem);
+ }
+ document.querySelectorAll(".radio-pill").forEach(label => {
+   label.addEventListener("click", () => {
+     document.querySelectorAll(".radio-pill").forEach(l => l.classList.remove("selected"));
+     label.classList.add("selected");
+   });
+ });
 });
 
+
 function addBudgetItem() {
-  const category = document.getElementById("budgetCategoryInput").value;
-  const limit = parseFloat(document.getElementById("budgetLimit").value);
+ const category = document.getElementById("budgetCategoryInput").value;
+ const limit = parseFloat(document.getElementById("budgetLimit").value);
 
-  if (!category || isNaN(limit) || limit <= 0) {
-    alert("Please enter a valid category and limit.");
-    return;
-  }
 
-  // Load existing budgets or start new list
-  let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+ if (!category || isNaN(limit) || limit <= 0) {
+   alert("Please enter a valid category and limit.");
+   return;
+ }
 
-  // Prevent duplicate categories
-  const existing = budgets.find(b => b.category === category);
-  if (existing) {
-    alert("That category already has a limit set!");
-    return;
-  }
 
-  // Add new item
-  budgets.push({ category, spent: 0, limit });
-  localStorage.setItem("budgets", JSON.stringify(budgets));
+ // Load existing budgets or start new list
+ let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
 
-  // Update UI
-  renderBudgets();
-  document.getElementById("budgetLimit").value = "";
 
-  // Switch back to home
-  showScreen('screen-home');
+ // Prevent duplicate categories
+ const existing = budgets.find(b => b.category === category);
+ if (existing) {
+   alert("That category already has a limit set!");
+   return;
+ }
+
+
+ // Add new item
+ budgets.push({ category, spent: 0, limit });
+ localStorage.setItem("budgets", JSON.stringify(budgets));
+
+
+ // Update UI
+ renderBudgets();
+ document.getElementById("budgetLimit").value = "";
+
+
+ // Switch back to home
+ showScreen('screen-home');
 }
+
 
 /* Load and render all budgets into the Home screen */
 function renderBudgets() {
-  const homeSection = document.querySelector("#screen-home .home-section:nth-of-type(2)");
-  const container = homeSection.querySelectorAll(".budget-item");
-  
-  // Clear old progress bars (except title)
-  homeSection.innerHTML = `
-    <h3 class="home-section-title">Budget Progress</h3>
-  `;
+ const homeSection = document.getElementById("home-budget-card");
+ if (!homeSection) return;
 
-  const budgets = JSON.parse(localStorage.getItem("budgets")) || [];
 
-  budgets.forEach(b => {
-    const percent = Math.min((b.spent / b.limit) * 100, 100);
-    const item = document.createElement("div");
-    item.className = "budget-item";
-    item.innerHTML = `
-      <div class="budget-label">
-        <span>${b.category}</span>
-        <span>$${b.spent} / $${b.limit}</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress" style="width:${percent}%;"></div>
-      </div>
-    `;
-    homeSection.appendChild(item);
-  });
+ homeSection.innerHTML = `<h3 class="home-section-title">Budget Progress</h3>`;
+
+
+ const budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+ budgets.forEach(b => {
+   const percent = Math.min((b.spent / b.limit) * 100, 100);
+   const item = document.createElement("div");
+   item.className = "budget-item";
+   item.innerHTML = `
+     <div class="budget-label">
+       <span>${b.category}</span>
+       <span>$${b.spent} / $${b.limit}</span>
+     </div>
+     <div class="progress-bar">
+       <div class="progress" style="width:${percent}%;"></div>
+     </div>
+   `;
+   homeSection.appendChild(item);
+ });
 }
+
+
+
+
 
 
 /*"ADD" SCREEN LOGIC*/
 function showChoices() {
-  const radio = document.querySelector('input[name="opt"]:checked');
-  const category = document.getElementById("categoryInput").value;
-  const amountString = document.getElementById("amountInput").value;
-  const date = document.getElementById("dateInput").value;
-  const merchant = document.getElementById("merchantInput").value;
-  const notes = document.getElementById("notesInput").value;
-
-  if (!radio || amountString === "" || date === "") {
-    alert("Please fill out all required fields (Amount, Date, Category).");
-    return;
-  }
-
-  const amount = parseFloat(amountString);
-  let newExpenseText = "";
-  let currentBalance = parseFloat(localStorage.getItem("balance"));
-  const merchantText = merchant ? ` at ${merchant}` : "";
-  const notesText = notes ? ` (${notes})` : "";
-
-  if (radio.value == "A") { // Income
-    newExpenseText = `You received: $${amount.toFixed(2)} from ${category}`;
-    currentBalance += amount;
-  } else { // Expense
-    newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}${merchantText}`;
-    currentBalance -= amount;
-  }
-
-  if (notes) {
-     newExpenseText += "|" + notes;
-  }
-
-  //Only update budgets for EXPENSES
-  if (radio.value === "B") {
-    let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
-    const b = budgets.find(b => b.category === category);
-    if (b) {
-      b.spent += amount;
-      localStorage.setItem("budgets", JSON.stringify(budgets));
-    }
-  }
+ const radio = document.querySelector('input[name="opt"]:checked');
+ const category = document.getElementById("categoryInput").value;
+ const amountString = document.getElementById("amountInput").value;
+ const date = document.getElementById("dateInput").value;
+ const merchant = document.getElementById("merchantInput").value;
+ const notes = document.getElementById("notesInput").value;
 
 
-  // Save new balance
-  localStorage.setItem("balance", currentBalance.toString());
+ if (!radio || amountString === "" || date === "") {
+   alert("Please fill out all required fields (Amount, Date, Category).");
+   return;
+ }
 
-  // Get old transaction list, add new one, save it back
-  const transactions = JSON.parse(localStorage.getItem("transactions"));
-  transactions.push(newExpenseText);
-  localStorage.setItem("transactions", JSON.stringify(transactions));
 
-  // Refresh the App Data
-  loadAppData();
+ const amount = parseFloat(amountString);
+ let newExpenseText = "";
+ let currentBalance = parseFloat(localStorage.getItem("balance"));
+ const merchantText = merchant ? ` at ${merchant}` : "";
+ const notesText = notes ? ` (${notes})` : "";
 
-  // Clear inputs
-  document.getElementById("amountInput").value = "";
-  document.getElementById("dateInput").value = "";
-  document.getElementById("categoryInput").value = "";
-  document.getElementById("merchantInput").value = ""; 
-  document.getElementById("notesInput").value = "";    
-  document.querySelector('input[name="opt"][value="B"]').checked = true; 
 
-  // Switch back to the home tab to see the change
-  showScreen('screen-home');
+ if (radio.value == "A") { // Income
+   newExpenseText = `You received: $${amount.toFixed(2)} from ${category}`;
+   currentBalance += amount;
+ } else { // Expense
+   newExpenseText = `You spent: $${amount.toFixed(2)} on ${category}${merchantText}`;
+   currentBalance -= amount;
+ }
+
+
+ if (notes) {
+    newExpenseText += "|" + notes;
+ }
+
+
+ //Only update budgets for EXPENSES
+ if (radio.value === "B") {
+   let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+   const b = budgets.find(b => b.category === category);
+   if (b) {
+     b.spent += amount;
+     localStorage.setItem("budgets", JSON.stringify(budgets));
+   }
+ }
+
+
+
+
+ // Save new balance
+ localStorage.setItem("balance", currentBalance.toString());
+
+
+ // Get old transaction list, add new one, save it back
+ const transactions = JSON.parse(localStorage.getItem("transactions"));
+ transactions.push(newExpenseText);
+ localStorage.setItem("transactions", JSON.stringify(transactions));
+
+
+ // Refresh the App Data
+ loadAppData();
+
+
+ // Clear inputs
+ document.getElementById("amountInput").value = "";
+ document.getElementById("dateInput").value = "";
+ document.getElementById("categoryInput").value = "";
+ document.getElementById("merchantInput").value = "";
+ document.getElementById("notesInput").value = "";   
+ document.querySelector('input[name="opt"][value="B"]').checked = true;
+
+
+ // Switch back to the home tab to see the change
+ showScreen('screen-home');
 }
+
+
 
 
 /*"TODO" SCREEN LOGIC*/
 function addTaskFromInput() {
-  const input = document.getElementById("taskInput");
-  const value = input.value.trim();
-  if (!value) return;
+ const input = document.getElementById("taskInput");
+ const value = input.value.trim();
+ if (!value) return;
 
-  const li = document.createElement("li");
-  const span = document.createElement("span");
-  span.textContent = value;
-  const close = document.createElement("span");
-  close.className = "close";
-  close.textContent = "×";
-  li.appendChild(span);
-  li.appendChild(close);
-  
+
+ const li = document.createElement("li");
+ const span = document.createElement("span");
+ span.textContent = value;
+ const close = document.createElement("span");
+ close.className = "close";
+ close.textContent = "×";
+ li.appendChild(span);
+ li.appendChild(close);
   document.getElementById("taskList").appendChild(li);
-  input.value = "";
-  input.focus();
+ input.value = "";
+ input.focus();
 }
+
 
 function wireTodoList() {
-  const list = document.getElementById("taskList");
-  list.addEventListener("click", (e) => {
-    if (e.target.classList.contains("close")) {
-      e.target.closest("li").remove();
-    }
-  });
+ const list = document.getElementById("taskList");
+ list.addEventListener("click", (e) => {
+   if (e.target.classList.contains("close")) {
+     e.target.closest("li").remove();
+   }
+ });
 }
+
 
 function wireTransactionList() {
 
-  const handleDelete = (e) => {
 
-    if (!e.target.classList.contains('close')) return;
-    
-    const li = e.target.closest('li');
-    if (!li) return; 
-    
-    const text = li.dataset.fullText;
-    
-    let transactions = JSON.parse(localStorage.getItem("transactions"));
-    let currentBalance = parseFloat(localStorage.getItem("balance"));
-    
-    const amountMatch = text.match(/(\d+\.\d{2})/); 
-    
-    if (amountMatch) {
-        const amount = parseFloat(amountMatch[1]);
-        if (text.startsWith("You spent")) {
-          const categoryMatch = text.match(/on\s+([A-Za-z]+)/);
-          if (categoryMatch) {
-              const category = categoryMatch[1];
-              let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
-              const b = budgets.find(b => b.category === category);
-              if (b) {
-                  b.spent = Math.max(0, b.spent - amount); // Prevent negative
-                  localStorage.setItem("budgets", JSON.stringify(budgets));
-              }
-          }
-        }
-        if (text.startsWith("You spent")) {
-            currentBalance += amount; // Add back the expense
-        } else if (text.startsWith("You received")) {
-            currentBalance -= amount; // Subtract the income
-        }
-        
-        localStorage.setItem("balance", currentBalance.toString());
-    }
+ const handleDelete = (e) => {
 
-    // Filter and save the transaction list
-    transactions = transactions.filter(t => t !== text);
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-    
-    // Reload all data
-    loadAppData();
-  };
 
-  // Attach this logic to both lists
-  document.getElementById('homeTransactionList').addEventListener('click', handleDelete);
-  document.getElementById('expenseList').addEventListener('click', handleDelete);
+   if (!e.target.classList.contains('close')) return;
+  
+   const li = e.target.closest('li');
+   if (!li) return;
+  
+   const text = li.dataset.fullText;
+  
+   let transactions = JSON.parse(localStorage.getItem("transactions"));
+   let currentBalance = parseFloat(localStorage.getItem("balance"));
+  
+   const amountMatch = text.match(/(\d+\.\d{2})/);
+  
+   if (amountMatch) {
+       const amount = parseFloat(amountMatch[1]);
+       if (text.startsWith("You spent")) {
+         const categoryMatch = text.match(/on\s+([A-Za-z]+)/);
+         if (categoryMatch) {
+             const category = categoryMatch[1];
+             let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+             const b = budgets.find(b => b.category === category);
+             if (b) {
+                 b.spent = Math.max(0, b.spent - amount); // Prevent negative
+                 localStorage.setItem("budgets", JSON.stringify(budgets));
+             }
+         }
+       }
+       if (text.startsWith("You spent")) {
+           currentBalance += amount; // Add back the expense
+       } else if (text.startsWith("You received")) {
+           currentBalance -= amount; // Subtract the income
+       }
+      
+       localStorage.setItem("balance", currentBalance.toString());
+   }
+
+
+   // Filter and save the transaction list
+   transactions = transactions.filter(t => t !== text);
+   localStorage.setItem("transactions", JSON.stringify(transactions));
+  
+   // Reload all data
+   loadAppData();
+ };
+
+
+ // Attach this logic to both lists
+ document.getElementById('homeTransactionList').addEventListener('click', handleDelete);
+ document.getElementById('expenseList').addEventListener('click', handleDelete);
 }
+
+
 
 
 function addProfile(id) {
-  const container = document.getElementById(id);
+ const container = document.getElementById(id);
 
-  const num = id.replace("addProfileBtn", "");
-  const usernameDiv = document.getElementById(`username${num}`);
 
-  const username = prompt("Enter new user's name:");
+ const num = id.replace("addProfileBtn", "");
+ const usernameDiv = document.getElementById(`username${num}`);
 
-  if (username) {
-    container.style.backgroundColor = "transparent";
-    container.innerHTML = `
-      <img src="images/default_profile.avif"
-           style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
-    `;
-    usernameDiv.textContent = username;
-  }
+
+ const username = prompt("Enter new user's name:");
+
+
+ if (username) {
+   container.style.backgroundColor = "transparent";
+   container.innerHTML = `
+     <img src="images/default_profile.avif"
+          style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
+   `;
+   usernameDiv.textContent = username;
+ }
 }
+
 
 /*BILLS LOGIC*/
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("addBillBtn")?.addEventListener("click", addNewBill);
-  document.getElementById("addGoalBtn")?.addEventListener("click", addNewGoal);
+ document.getElementById("addBillBtn")?.addEventListener("click", addNewBill);
+ document.getElementById("addGoalBtn")?.addEventListener("click", addNewGoal);
 });
 
+
 function addNewBill() {
-  const name = document.getElementById("billName").value;
-  const amount = document.getElementById("billAmount").value;
-  const date = document.getElementById("billDate").value;
+ const name = document.getElementById("billName").value;
+ const amount = document.getElementById("billAmount").value;
+ const date = document.getElementById("billDate").value;
 
-  if (!name || !amount || !date) {
-    alert("Please fill out all bill details.");
-    return;
-  }
 
-  // Get existing bills
-  const bills = JSON.parse(localStorage.getItem("bills")) || [];
+ if (!name || !amount || !date) {
+   alert("Please fill out all bill details.");
+   return;
+ }
 
-  // Add new bill
-  bills.push({ name, amount, date });
-  
+
+ // Get existing bills
+ const bills = JSON.parse(localStorage.getItem("bills")) || [];
+
+
+ // Add new bill
+ bills.push({ name, amount, date });
   // Sort bills by date
-  bills.sort((a, b) => new Date(a.date) - new Date(b.date));
+ bills.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // Save back to storage
-  localStorage.setItem("bills", JSON.stringify(bills));
 
-  loadAppData();
-  
+ // Save back to storage
+ localStorage.setItem("bills", JSON.stringify(bills));
+
+
+ loadAppData();
   // Clear inputs
-  document.getElementById("billName").value = "";
-  document.getElementById("billAmount").value = "";
-  document.getElementById("billDate").value = "";
-  
+ document.getElementById("billName").value = "";
+ document.getElementById("billAmount").value = "";
+ document.getElementById("billDate").value = "";
   showScreen('screen-home');
 }
+
 
 function addNewGoal() {
-  const name = document.getElementById("goalName").value;
-  const target = parseFloat(document.getElementById("goalAmount").value);
+ const name = document.getElementById("goalName").value;
+ const target = parseFloat(document.getElementById("goalAmount").value);
 
-  const date = document.getElementById("goalDate").value;
-  const note = document.getElementById("goalNote").value;
 
-  if (!name || isNaN(target) || target <= 0 || !date) {
-    alert("Please fill out all required goal fields.");
-    return;
-  }
+ const date = document.getElementById("goalDate").value;
+ const note = document.getElementById("goalNote").value;
 
-  const goals = JSON.parse(localStorage.getItem("goals")) || [];
-  goals.push({ name, saved: 0, target, date, note });
-  localStorage.setItem("goals", JSON.stringify(goals));
 
-  closeModal('savingsModal');
-  loadAppData();
-  showScreen('screen-home');
-  
+ if (!name || isNaN(target) || target <= 0 || !date) {
+   alert("Please fill out all required goal fields.");
+   return;
+ }
+
+
+ const goals = JSON.parse(localStorage.getItem("goals")) || [];
+ goals.push({ name, saved: 0, target, date, note });
+ localStorage.setItem("goals", JSON.stringify(goals));
+
+
+ closeModal('savingsModal');
+ loadAppData();
+ showScreen('screen-home');
   document.getElementById("goalName").value = "";
-  document.getElementById("goalAmount").value = "";
-  document.getElementById("goalDate").value = "";
-  document.getElementById("goalNote").value = "";
+ document.getElementById("goalAmount").value = "";
+ document.getElementById("goalDate").value = "";
+ document.getElementById("goalNote").value = "";
 }
+
 
 /* MODAL LOGIC */
 function openModal(modalId) {
-  document.getElementById(modalId).style.display = "flex";
+ document.getElementById(modalId).style.display = "flex";
 }
 
+
 function closeModal(modalId) {
-  document.getElementById(modalId).style.display = "none";
+ document.getElementById(modalId).style.display = "none";
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+ const source = document.getElementById('homeBalance');          // existing balance
+ const target = document.getElementById('homeHeaderBalance');    // header pill
+ if (!source || !target) return;
+
+
+ const sync = () => { target.textContent = source.textContent; };
+ new MutationObserver(sync).observe(source, { childList: true, characterData: true, subtree: true });
+ sync();
+});
+
 
 // ad moneeeyyy
 function depositToGoal(goalName) {
-  const amountStr = prompt(`How much do you want to save for ${goalName}?`);
-  const amount = parseFloat(amountStr);
+ const amountStr = prompt(`How much do you want to save for ${goalName}?`);
+ const amount = parseFloat(amountStr);
 
-  if (!amount || isNaN(amount) || amount <= 0) {
-    alert("Please enter a valid amount.");
-    return;
-  }
 
-  let goals = JSON.parse(localStorage.getItem("goals")) || [];
-  let currentBalance = parseFloat(localStorage.getItem("balance"));
-  let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+ if (!amount || isNaN(amount) || amount <= 0) {
+   alert("Please enter a valid amount.");
+   return;
+ }
 
-  // Find and update the goal
-  const goal = goals.find(g => g.name === goalName);
-  if (goal) {
-    goal.saved += amount;
-    // Subtract from main balance
-    currentBalance -= amount;
-    
-    // Record the transaction
-    transactions.push(`Savings: Moved $${amount.toFixed(2)} to ${goalName}`);
-  }
 
-  localStorage.setItem("goals", JSON.stringify(goals));
-  localStorage.setItem("balance", currentBalance.toString());
-  localStorage.setItem("transactions", JSON.stringify(transactions));
+ let goals = JSON.parse(localStorage.getItem("goals")) || [];
+ let currentBalance = parseFloat(localStorage.getItem("balance"));
+ let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
-  loadAppData();
+
+ // Find and update the goal
+ const goal = goals.find(g => g.name === goalName);
+ if (goal) {
+   goal.saved += amount;
+   // Subtract from main balance
+   currentBalance -= amount;
+  
+   // Record the transaction
+   transactions.push(`Savings: Moved $${amount.toFixed(2)} to ${goalName}`);
+ }
+
+
+ localStorage.setItem("goals", JSON.stringify(goals));
+ localStorage.setItem("balance", currentBalance.toString());
+ localStorage.setItem("transactions", JSON.stringify(transactions));
+
+
+ loadAppData();
 }
+
